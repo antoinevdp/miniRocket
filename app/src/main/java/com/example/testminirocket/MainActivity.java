@@ -6,9 +6,12 @@ import java.util.Random;
 
 import android.os.Bundle;
 import android.view.View;
+
 import android.widget.Toast;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +27,16 @@ public class MainActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         Toast.makeText(MainActivity.this, "Test", Toast.LENGTH_LONG).show();
+
+        button = (Button) findViewById(R.id.button);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Coucou", Toast.LENGTH_SHORT).show();
+            }
+        });
         
     }
+
 }

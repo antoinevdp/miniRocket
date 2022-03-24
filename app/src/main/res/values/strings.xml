@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">test mini rocket</string>
+    <string name="button_str">Appuyez</string>
 </resources>
