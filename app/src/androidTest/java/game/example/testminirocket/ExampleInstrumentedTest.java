@@ -1,4 +1,4 @@
-package com.example.testminirocket;
+package game.example.testminirocket;
 
 import android.content.Context;
 
