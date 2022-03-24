@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Random;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Coucou", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, secondActivity.class));
             }
         });
         
