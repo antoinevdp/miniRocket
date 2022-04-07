@@ -14,12 +14,15 @@ import android.widget.Button;
 
 import com.minirocket.game.R;
 
+import java.security.AccessController;
+
 public class MainActivity extends Activity {
     private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         /*getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -47,12 +50,19 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(view.getContext(), secondActivity.class);
+                //myIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivityForResult(myIntent, 0);
+                //overridePendingTransition(0,0);
             }
         });
 
 
-        
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(0, 0);
     }
 
 }
