@@ -50,9 +50,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(view.getContext(), secondActivity.class);
-                //myIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivityForResult(myIntent, 0);
-                //overridePendingTransition(0,0);
             }
         });
 

@@ -8,4 +8,85 @@
     android:screenOrientation="landscape"
     tools:context="game.example.testminirocket.secondActivity">
 
+    <ImageButton
+        android:id="@+id/returnButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        android:src="?attr/actionModeCloseDrawable"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="#FFFFFF"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <ImageView
+        android:id="@+id/starship"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:adjustViewBounds="true"
+        android:maxWidth="100dp"
+        android:maxHeight="100dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/spaceship"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/galaxie1"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_marginEnd="190dp"
+        android:layout_marginBottom="60dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/galaxie"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/starship"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <ImageButton
+        android:id="@+id/galaxie4"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_marginStart="190dp"
+        android:layout_marginBottom="60dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/galaxie"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/starship"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <ImageButton
+        android:id="@+id/galaxie3"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="60dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/galaxie"
+        app:layout_constraintStart_toEndOf="@+id/starship"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <ImageButton
+        android:id="@+id/galaxie2"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="100dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/galaxie"
+        app:layout_constraintEnd_toStartOf="@+id/starship"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
