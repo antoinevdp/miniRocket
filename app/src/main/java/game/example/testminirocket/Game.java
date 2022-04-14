@@ -2,7 +2,9 @@ package game.example.testminirocket;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -20,6 +22,9 @@ Responsible of rendering, updating, etc...
 
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private GameLoop gameLoop;
+    private Planet planet;
+    private Planet planet2;
+    private Planet planet3;
     private Context context;
 
     public Game(Context context) {
@@ -29,9 +34,27 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         surfaceHolder.addCallback(this);
 
         this.context = context;
-         gameLoop = new GameLoop(this, surfaceHolder);
+        gameLoop = new GameLoop(this, surfaceHolder);
+
+        planet = new Planet(getContext(), 500, 200, 50, "");
+        planet2 = new Planet(getContext(), 1500, 300, 50, "");
+        planet3 = new Planet(getContext(), 720, 700, 50, "");
 
         setFocusable(true);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        //Touch events
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_MOVE:
+                planet.changePosition((double)event.getX(), (double) event.getY());
+                return true;
+            case MotionEvent.ACTION_UP:
+                planet.release();
+        }
+        return super.onTouchEvent(event);
     }
 
     @Override
@@ -53,6 +76,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas){
         super.draw(canvas);
         drawFPS(canvas);
+
+        planet.draw(canvas);
+        planet2.draw(canvas);
+        planet3.draw(canvas);
+
     }
 
     public void drawFPS(Canvas canvas){
@@ -66,6 +94,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update() {
         //update
+        planet.update();
         return;
     }
 }
