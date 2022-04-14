@@ -48,7 +48,7 @@
         android:layout_marginTop="5dp"
         android:backgroundTint="@color/menu_btn"
         android:layout_marginBottom="157dp"
-        android:text="Button"
+        android:text="OPTIONS"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_play" />
@@ -65,5 +65,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_options" />
+
+    <Button
+        android:id="@+id/test_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="476dp"
+        tools:layout_editor_absoluteY="198dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

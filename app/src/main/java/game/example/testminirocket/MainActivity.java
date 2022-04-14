@@ -14,8 +14,13 @@ import android.widget.Button;
 
 import com.minirocket.game.R;
 
+/*
+This activity is the launch activity og the App
+ */
+
 public class MainActivity extends Activity {
     private Button button;
+    private Button button_test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +47,19 @@ public class MainActivity extends Activity {
         Toast.makeText(MainActivity.this, "Test", Toast.LENGTH_LONG).show();
 
         button = (Button) findViewById(R.id.btn_play);
+        button_test = (Button) findViewById(R.id.test_btn);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(view.getContext(), secondActivity.class);
+                startActivityForResult(myIntent, 0);
+            }
+        });
+        button_test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(view.getContext(), MainActivityTest.class);
                 startActivityForResult(myIntent, 0);
             }
         });
