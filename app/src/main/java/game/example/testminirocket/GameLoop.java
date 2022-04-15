@@ -31,6 +31,10 @@ public class GameLoop extends Thread{
         start();
     }
 
+    public void stopLoop() {
+        isRunning = false;
+    }
+
     @Override
     public void run(){
         super.run();

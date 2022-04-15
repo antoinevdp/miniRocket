@@ -15,6 +15,7 @@
             android:screenOrientation="landscape"
             android:exported="false" />
         <activity
+            android:parentActivityName="game.example.testminirocket.MainActivity"
             android:name="game.example.testminirocket.MainActivityTest"
             android:screenOrientation="landscape"
             tools:ignore="LockedOrientationActivity"

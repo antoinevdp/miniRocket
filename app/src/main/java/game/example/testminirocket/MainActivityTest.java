@@ -45,8 +45,6 @@ public class MainActivityTest extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        Intent myIntent = new Intent(this, MainActivity.class);
-        startActivityForResult(myIntent, 0);
     }
 
     @Override
@@ -57,5 +55,6 @@ public class MainActivityTest extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        finish();
     }
 }

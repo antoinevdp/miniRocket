@@ -2,22 +2,33 @@ package game.example.testminirocket;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
 import com.minirocket.game.R;
 
-public class Planet {
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.EventListener;
+
+public class Planet implements View.OnTouchListener{
     private double positionX;
     private double positionY;
-    private double radius;
+    public double radius;
     private Context context;
     private String infos;
     private Paint paint;
 
-    public Planet(Context context, double positionX, double positionY, double radius, String infos){
+    private ArrayList<Planet> list_planets = new ArrayList<Planet>();
+
+    private Trajectory trajectory;
+
+    public Planet(Context context, double positionX, double positionY, double radius, String infos, ArrayList<Planet> list_planets){
         this.positionX = positionX;
         this.positionY = positionY;
         this.radius = radius;
@@ -25,13 +36,19 @@ public class Planet {
         this.infos = infos;
         this.paint = paint;
 
+        this.list_planets = list_planets;
+
+        trajectory = new Trajectory(0,0,0,0);
+
         paint = new Paint();
         int color = ContextCompat.getColor(context, R.color.planet_color);
         paint.setColor(color);
+
     }
 
     public void draw(Canvas canvas) {
         canvas.drawCircle((float)positionX, (float)positionY, (float)radius, paint);
+        trajectory.draw(canvas);
     }
 
     public void changePosition(double positionX, double positionY){
@@ -45,6 +62,21 @@ public class Planet {
         this.paint.setColor(color);
     }
 
+    public float getPositionX(){
+        return (float)(this.positionX);
+    }
+    public float getPositionY(){
+        return (float)(this.positionY);
+    }
+
     public void update() {
+        trajectory.update();
+    }
+
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+
+        return false;
     }
 }
