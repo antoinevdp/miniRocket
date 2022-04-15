@@ -33,11 +33,16 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private Planet planet2;
     private Planet planet3;
 
-    private boolean canDragLine = false;
-    private boolean canLeaveLine = false;
+    private boolean canDragLine = false; // peut on tracer la ligne en maintenant le doigt
+    private boolean canLeaveLine = false; // peut on relâcher la ligne pour a créée
 
-    public ArrayList<Planet> list_planets = new ArrayList<Planet>();
-    public ArrayList<Trajectory> list_trajectories = new ArrayList<Trajectory>();
+    private Planet currentStartPlanet; // Planète où commence la ligne
+    private Planet currentStopPlanet; // Planète où finie la ligne
+
+    public ArrayList<Planet> list_planets = new ArrayList<Planet>(); // liste des planète du niveau
+    public ArrayList<Trajectory> list_trajectories = new ArrayList<Trajectory>(); // liste des Trajets entre planètes
+
+    private int trajectoryIndex; // index dans la liste des trajectoires de la trajectoire actuelle
 
 
 
@@ -48,8 +53,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         SurfaceHolder surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
 
-        gameLoop = new GameLoop(this, surfaceHolder);
+        gameLoop = new GameLoop(this, surfaceHolder); // loop du jeu
 
+        //initialisationd es planètes et ajout dans la liste des planètes
         planet = new Planet(getContext(), 500, 200, 50, "", list_planets);
         list_planets.add(planet);
         planet2 = new Planet(getContext(), 1500, 300, 50, "", list_planets);
@@ -57,63 +63,29 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         planet3 = new Planet(getContext(), 720, 700, 50, "", list_planets);
         list_planets.add(planet3);
 
-        list_trajectories.add(new Trajectory(0,0,0,0));
-        list_trajectories.add(new Trajectory(0,0,0,0));
-        list_trajectories.add(new Trajectory(0,0,0,0));
-
-        Log.d("liste p", String.valueOf(list_planets.get(0).getPositionX()));
-        Log.d("liste t", String.valueOf(list_trajectories));
-
-        this.setOnTouchListener(planet);
-
+        // initialisation des trajectoires et ajout dans la liste des trajectoires
+        for (int i=0; i<list_planets.size(); i++) list_trajectories.add(new Trajectory(0,0,0,0));
 
         setFocusable(true);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override // Touch Event Handler
     public boolean onTouchEvent(MotionEvent event) {
-        int index_traj = 0;
         //Touch events
         switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                for (int i = 0; i < list_planets.size(); i++) {
-                    index_traj = i;
-                    Planet t_planet = list_planets.get(i);
-                    if(hasTouchedPlanet((float) event.getX(), (float) event.getY(), t_planet)){
-                        list_trajectories.get(0).resetToCursor(event.getX(), (float) event.getY());
-                        Log.d("a touche ? : ", String.valueOf(hasTouchedPlanet((float) event.getX(), (float) event.getY(), t_planet)));
-                        list_trajectories.get(0).setStartPosition(t_planet.getPositionX(), t_planet.getPositionY());
-                        canDragLine = true;
-                        break;
-                    }
-                    else{
-                        list_trajectories.get(0).reset();
-                        canDragLine = false;
-                    }
-                }
+            case MotionEvent.ACTION_DOWN: // Dès que l'utilisateur appui
+                startLine(event.getX(), event.getY()); // On crée ou non la ligne en récupérant les coord de l'endroit cliqué
+                return true; // Action terminée
 
-                return true;
+            case MotionEvent.ACTION_MOVE: // Tant que l'utilisateur reste appuyé
+                if(canDragLine) draggingLine(event.getX(), event.getY()); // on trace la ligne en fonction de l'endroit où l'ulisateur se déplace
+                return true; // Action terminée
 
-            case MotionEvent.ACTION_MOVE:
-                if(canDragLine){
-                    list_trajectories.get(0).setEndPosition((float) event.getX(), (float) event.getY());
-                    invalidate();
-                }
-            case MotionEvent.ACTION_UP:
-                if (true){
-                    for (int i = 0; i < list_planets.size(); i++) {
-                        index_traj = i;
-                        Planet t_planet = list_planets.get(i);
-                        if(hasTouchedPlanet((float) event.getX(), (float) event.getY(), t_planet)){
-                            Log.d("a touche leve? : ", String.valueOf(hasTouchedPlanet((float) event.getX(), (float) event.getY(), t_planet)));
-                            list_trajectories.get(0).setEndPosition(t_planet.getPositionX(), t_planet.getPositionY());
-                            break;
-                        }
-                    }
-                }
+            case MotionEvent.ACTION_UP: // Dès que l'utilisateur relâche
+                stopLine(); // on arrête la ligne sur une planète ou alors on l'efface
 
-                //list_trajectories.get(0).reset();
-                return true;
+                return true; // Action terminée
 
         }
         return super.onTouchEvent(event);
@@ -133,14 +105,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
         holder.removeCallback(this);
         gameLoop.stopLoop();
-
     }
 
-    @Override // Affichage
+    @Override // Affichage des elements à l'écran
     public void draw(Canvas canvas){
         super.draw(canvas);
         drawFPS(canvas);
 
+        // on affiche toutes les planètes et trajectoires
         for (int i = 0; i < list_planets.size(); i++) {
             list_planets.get(i).draw(canvas);
         }
@@ -150,11 +122,71 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
+    // Si l'utilisateur touche une planète
     public boolean hasTouchedPlanet(float cursorX, float cursorY, Planet t_planet){
         return ((cursorX >= t_planet.getPositionX() - t_planet.radius) && (cursorX <= (float) t_planet.getPositionX() + t_planet.radius)) && ((cursorY >= t_planet.getPositionY() - t_planet.radius) && (cursorY <= t_planet.getPositionY() + t_planet.radius));
     }
+    // Trace la ligne
+    public void startLine(float cursorX, float cursorY){
+        for (int i = 0; i < list_planets.size(); i++) { // on parcourt la liste des planètes
+            Planet t_planet = list_planets.get(i); // La planète actuelle
+            if(hasTouchedPlanet(cursorX, cursorY, t_planet)){ // Si la planète actuelle est touché
+                currentStartPlanet = t_planet; // on assigne la planète touchée à la variable qui stocke la planète de départ
+                trajectoryIndex = list_planets.indexOf(currentStartPlanet); // on assigne son index à celui de la trajectoire actuelle
+                list_trajectories.get(i).resetToCursor(cursorX,cursorY); // On place le départ de la ligne sur la position de la planète
+                list_trajectories.get(i).setStartPosition(t_planet.getPositionX(), t_planet.getPositionY()); // On positionne le début de la trajectoire à la planète de départ
+                canDragLine = true; // On peut créer une ligne depuis la planète de départ
+                break; // Comme nous avons trouve la planète touchée, on arrête la boucle for
+            }
+            else{ // Si l'utilisateur n'appui pas sur une planète, on reset toutes les variables
+                canDragLine = false;
+                canLeaveLine = false;
+                currentStartPlanet = null;
+                currentStopPlanet = null;
+                trajectoryIndex = -1;
+            }
+        }
+    }
+    public void draggingLine(float cursorX, float cursorY){ // Quand le joueur maintient
+        if (trajectoryIndex != -1){
+            list_trajectories.get(trajectoryIndex).setEndPosition(cursorX, cursorY); // On récupère la trajectoire actuelle
+            for (int i = 0; i < list_planets.size(); i++) { // on parcourt la liste des planètes
+                Planet t_planet = list_planets.get(i); // on recupere la planète actuelle
+                if(hasTouchedPlanet(cursorX, cursorY, t_planet)){ // Si l'utilisateur passe sur une planète
+                    canLeaveLine = true; // On peut relacher la ligne
+                    currentStopPlanet = t_planet; // la planète d'arrivée est la planète actuelle
+                    // On set la fin du segment à l'emplacement du doigt
+                    list_trajectories.get(trajectoryIndex).setEndPosition(currentStopPlanet.getPositionX(), currentStopPlanet.getPositionY());
+                    break; // On a trouve la planète donc on quitte la boucle
+                }
+                else{ // Si l'utilisateur ne passe pas au dessus d'une planète
+                    canLeaveLine = false; // On ne peut pas relâcher (en créant une ligne)
+                    currentStopPlanet = null; // il n'y a pas de planète d'arr
+                }
+            }
+            invalidate(); // on call draw pour actualiser
+        }
 
-    public void drawFPS(Canvas canvas){
+    }
+    public void stopLine(){ // Quand on relâche le doigt
+        if(trajectoryIndex != -1){
+            // Si on peut relâcher sur une planète
+            if(canLeaveLine){
+                // On set la fin du segment à l'emplacement de la deuxieme planète
+                list_trajectories.get(trajectoryIndex).setEndPosition(currentStopPlanet.getPositionX(), currentStopPlanet.getPositionY());
+            }
+            else list_trajectories.get(trajectoryIndex).reset(); // Si l'utilisateur ne relâche pas sur une planète, on efface la ligne
+            //on reset toutes les variables
+            canDragLine = false;
+            canLeaveLine = false;
+            currentStartPlanet = null;
+            currentStopPlanet = null;
+            trajectoryIndex = -1;
+        }
+
+    }
+
+    public void drawFPS(Canvas canvas){ // FPS
         String averageFPS = Double.toString(gameLoop.getAverageFPS());
         Paint paint = new Paint();
         int color = ContextCompat.getColor(getContext(), R.color.purple_200);
@@ -163,7 +195,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawText("FPS : " + averageFPS, 100, 100, paint);
     }
 
-    public void update() {
+    public void update() { // Update
         //update
         for (int i = 0; i < list_planets.size(); i++) {
             list_planets.get(i).update();
@@ -171,16 +203,5 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         for (int i = 0; i < list_trajectories.size(); i++) {
             list_trajectories.get(i).update();
         }
-        return;
     }
 }
-/*
-for (int i=0; i <= list_planets.size(); i++){
-                    index_traj = i;
-                    Planet t_planet = list_planets.get(i);
-                    if (hasTouchedPlanet((float) getX(), (float) getY(), t_planet)){
-                        Log.d("ff", "ff");
-                        list_trajectories.get(index_traj).setStartPosition((float)event.getX(), (float)event.getY());
-                    }
-                }
- */

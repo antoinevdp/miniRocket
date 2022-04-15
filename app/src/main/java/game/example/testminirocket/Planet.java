@@ -16,7 +16,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.EventListener;
 
-public class Planet implements View.OnTouchListener{
+public class Planet{
     private double positionX;
     private double positionY;
     public double radius;
@@ -73,10 +73,4 @@ public class Planet implements View.OnTouchListener{
         trajectory.update();
     }
 
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-
-        return false;
-    }
 }
