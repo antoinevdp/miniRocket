@@ -18,7 +18,9 @@ import androidx.core.content.ContextCompat;
 import com.minirocket.game.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /*
 This class manages everything that deals with the game
@@ -29,12 +31,9 @@ Responsible of rendering, updating, etc...
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private GameLoop gameLoop;
 
-    private Planet planet;
-    private Planet planet2;
-    private Planet planet3;
-
     private boolean canDragLine = false; // peut on tracer la ligne en maintenant le doigt
     private boolean canLeaveLine = false; // peut on relâcher la ligne pour a créée
+    private boolean overlapping = false;
 
     private Planet currentStartPlanet; // Planète où commence la ligne
     private Planet currentStopPlanet; // Planète où finie la ligne
@@ -47,7 +46,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
 
     @SuppressLint("ClickableViewAccessibility")
-    public Game(Context context) { // Constructor
+    public Game(Context context, int numberOfPlanets) { // Constructor
         super(context);
 
         SurfaceHolder surfaceHolder = getHolder();
@@ -56,12 +55,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         gameLoop = new GameLoop(this, surfaceHolder); // loop du jeu
 
         //initialisationd es planètes et ajout dans la liste des planètes
-        planet = new Planet(getContext(), 500, 200, 50, "", list_planets);
-        list_planets.add(planet);
-        planet2 = new Planet(getContext(), 1500, 300, 50, "", list_planets);
-        list_planets.add(planet2);
-        planet3 = new Planet(getContext(), 720, 700, 50, "", list_planets);
-        list_planets.add(planet3);
+
+        generatePlanets(numberOfPlanets);
 
         // initialisation des trajectoires et ajout dans la liste des trajectoires
         for (int i=0; i<list_planets.size(); i++) list_trajectories.add(new Trajectory(0,0,0,0));
@@ -139,11 +134,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 break; // Comme nous avons trouve la planète touchée, on arrête la boucle for
             }
             else{ // Si l'utilisateur n'appui pas sur une planète, on reset toutes les variables
-                canDragLine = false;
-                canLeaveLine = false;
-                currentStartPlanet = null;
-                currentStopPlanet = null;
-                trajectoryIndex = -1;
+                resetVariables();
             }
         }
     }
@@ -177,13 +168,61 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             }
             else list_trajectories.get(trajectoryIndex).reset(); // Si l'utilisateur ne relâche pas sur une planète, on efface la ligne
             //on reset toutes les variables
-            canDragLine = false;
-            canLeaveLine = false;
-            currentStartPlanet = null;
-            currentStopPlanet = null;
-            trajectoryIndex = -1;
+            resetVariables();
         }
 
+    }
+
+    public void generatePlanets(int numberOfPlanets){
+        int coordMinX = 100;
+        int coordMinY = 100;
+        int coordMaxX = 1800;
+        int coordMaxY = 1000;
+        int minRadius = 30;
+        int maxRadius = 100;
+        int protection = 0;
+
+        while (list_planets.size() < numberOfPlanets) {
+            // Calculer
+            protection++;
+
+            int coordX_rand = (int)Math.floor(Math.random()*(coordMaxX-coordMinX+1)+coordMinX);
+            int coordY_rand = (int)Math.floor(Math.random()*(coordMaxY-coordMinY+1)+coordMinY);
+            int radius_rand = (int)Math.floor(Math.random()*(maxRadius-minRadius+1)+minRadius);
+
+
+            if(list_planets.size()!=0){
+                for (int j = 0; j < list_planets.size(); j++) {
+                    Planet previousPlanet = list_planets.get(j);
+                    int maxBtwCoordX = (int)Math.max(coordX_rand, previousPlanet.getPositionX());
+                    int maxBtwCoordY = (int)Math.max(coordY_rand, previousPlanet.getPositionY());
+                    int minBtwCoordX = (int)Math.min(coordX_rand, previousPlanet.getPositionX());
+                    int minBtwCoordY = (int)Math.min(coordY_rand, previousPlanet.getPositionY());
+
+                    int distance = (int)Math.sqrt(Math.pow(maxBtwCoordX - minBtwCoordX, 2) + Math.pow(maxBtwCoordY - minBtwCoordY, 2));
+                    if (distance < radius_rand*2 + previousPlanet.radius*2){
+                        overlapping = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!overlapping){
+                Log.d("place", "planete placed !!!!!!");
+                Planet planet = new Planet(getContext(), coordX_rand, coordY_rand, radius_rand, "", list_planets);
+                list_planets.add(planet);
+            }
+            overlapping = false;
+            if (protection > 1000)break;
+        }
+    }
+
+    public void resetVariables(){
+        canDragLine = false;
+        canLeaveLine = false;
+        currentStartPlanet = null;
+        currentStopPlanet = null;
+        trajectoryIndex = -1;
     }
 
     public void drawFPS(Canvas canvas){ // FPS

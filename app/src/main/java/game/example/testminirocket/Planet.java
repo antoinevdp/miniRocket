@@ -3,18 +3,12 @@ package game.example.testminirocket;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
 import com.minirocket.game.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.EventListener;
 
 public class Planet{
     private double positionX;
@@ -23,6 +17,8 @@ public class Planet{
     private Context context;
     private String infos;
     private Paint paint;
+
+    private ArrayList<Traveller> list_travellers = new ArrayList<Traveller>();
 
     private ArrayList<Planet> list_planets = new ArrayList<Planet>();
 
