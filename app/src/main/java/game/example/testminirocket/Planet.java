@@ -43,7 +43,7 @@ public class Planet{
 
     public void draw(Canvas canvas) {
         canvas.drawCircle((float)positionX, (float)positionY, (float)radius, paint);
-        my_trajectory.draw(canvas);
+        this.my_trajectory.draw(canvas);
     }
     // pour changer la planète de position
     public void changePosition(double positionX, double positionY){
@@ -58,7 +58,7 @@ public class Planet{
     }
     // Pour unset la trajectoire de sortie de cette planète
     public void unsetMyTrajectory(){
-        this.my_trajectory = null;
+        this.my_trajectory = new Trajectory(0,0,0,0);
     }
     // Pour set la planète associée de cette planète
     public void setLinkedPlanet(Planet linkedPlanet){
@@ -81,7 +81,7 @@ public class Planet{
     }
     //update
     public void update() {
-        my_trajectory.update();
+        //my_trajectory.update();
     }
 
 }

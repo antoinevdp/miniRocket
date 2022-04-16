@@ -29,6 +29,7 @@ public class Trajectory {
     }
 
     public void update() {
+
     }
 
     public void setStartPosition(double startPosX, double startPosY) {

@@ -107,12 +107,17 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         drawFPS(canvas);
 
         // on affiche toutes les planètes et trajectoires
-        for (int i = 0; i < list_planets.size(); i++) {
-            list_planets.get(i).draw(canvas);
+        if (list_planets.size()>0){
+            for (int i = 0; i < list_planets.size(); i++) {
+                list_planets.get(i).draw(canvas);
+            }
         }
-        for (int i = 0; i < list_trajectories.size(); i++) {
-            list_trajectories.get(i).draw(canvas);
+        if (list_trajectories.size()>0){
+            for (int i = 0; i < list_trajectories.size(); i++) {
+                list_trajectories.get(i).draw(canvas);
+            }
         }
+
 
     }
 
@@ -174,6 +179,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 list_trajectories.get(trajectoryIndex).reset();//on efface la ligne
                 currentStartPlanet.unsetLinkedPlanet();// On retire la planète link
                 currentStartPlanet.unsetMyTrajectory();// on retire la trajectoire link
+
             }
             //on reset toutes les variables
             resetVariables();
