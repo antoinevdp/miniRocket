@@ -13,7 +13,7 @@ public class Trajectory {
     private double startPosY;
     private double endPosX;
     private double endPosY;
-    private Paint paint = new Paint();
+    private final Paint paint = new Paint();
 
     public Trajectory(double startPosX, double startPosY, double endPosX, double endPosY) {
         this.startPosX = startPosX;

@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="menu_btn">#405F73</color>
     <color name="planet_color">#FFF</color>
+    <color name="traveller_color">#7FB069</color>
+
 </resources>

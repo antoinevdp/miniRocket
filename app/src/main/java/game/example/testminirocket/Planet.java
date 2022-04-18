@@ -10,7 +10,7 @@ import com.minirocket.game.R;
 
 import java.util.ArrayList;
 
-public class Planet{
+public class Planet extends GameObject{
     private double positionX;
     private double positionY;
     public double radius;
@@ -19,12 +19,15 @@ public class Planet{
     private Paint paint;
 
     private ArrayList<Traveller> list_travellers = new ArrayList<Traveller>(); // Liste des voyageurs sur la planète
+    private ArrayList<Planet> list_of_arr_planets = new ArrayList<Planet>(); // Liste des voyageurs sur la planète
+
 
     public Trajectory my_trajectory; // La trajectoire associée à cette planète
     public Planet linkedPlanet = null;// La planète d'arr associée à cette planète
 
     // Constructeur
     public Planet(Context context, double positionX, double positionY, double radius, String infos, Trajectory my_trajectory, ArrayList<Traveller> list_travellers){
+        super(positionX, positionY);
         this.positionX = positionX;
         this.positionY = positionY;
         this.radius = radius;
@@ -72,12 +75,8 @@ public class Planet{
     public boolean isLinkedWithPlanet(){
         return this.linkedPlanet != null;
     }
-    // Récuperer la position
-    public float getPositionX(){
-        return (float)(this.positionX);
-    }
-    public float getPositionY(){
-        return (float)(this.positionY);
+    public ArrayList<Planet> getListOfArrPlanets(){
+        return this.list_of_arr_planets;
     }
     //update
     public void update() {

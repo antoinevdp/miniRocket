@@ -59,6 +59,20 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         //initialisationd es planètes et ajout dans la liste des planètes
         generatePlanets(numberOfPlanets, facteurDeDistance);
 
+        for (int i = 0; i < 20; i++) {
+            Random rand = new Random(); //instance of random class
+            int spawn_planet_random = rand.nextInt(numberOfPlanets);
+            int target_planet_random = rand.nextInt(numberOfPlanets);
+            while (spawn_planet_random == target_planet_random){
+                target_planet_random = rand.nextInt(numberOfPlanets);
+            }
+
+
+            Traveller traveller_test = new Traveller(getContext(), 0,0, list_planets.get(spawn_planet_random), list_planets.get(target_planet_random));
+            list_travellers.add(traveller_test);
+        }
+
+
 
         setFocusable(true);
     }
@@ -106,6 +120,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
         drawFPS(canvas);
 
+
         // on affiche toutes les planètes et trajectoires
         if (list_planets.size()>0){
             for (int i = 0; i < list_planets.size(); i++) {
@@ -115,6 +130,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         if (list_trajectories.size()>0){
             for (int i = 0; i < list_trajectories.size(); i++) {
                 list_trajectories.get(i).draw(canvas);
+            }
+        }
+        if (list_travellers.size()>0){
+            for (int i = 0; i < list_travellers.size(); i++) {
+                list_travellers.get(i).draw(canvas);
             }
         }
 
@@ -136,6 +156,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 Trajectory current_trajectory = list_trajectories.get(i);
                 current_trajectory.resetToCursor(cursorX,cursorY); // On place le départ de la ligne sur la position de la planète
                 current_trajectory.setStartPosition(t_planet.getPositionX(), t_planet.getPositionY()); // On positionne le début de la trajectoire à la planète de départ
+                if (currentStartPlanet.linkedPlanet != null){ // Si la planète associée à la planète de départ existe
+                    currentStartPlanet.linkedPlanet.getListOfArrPlanets().remove(currentStartPlanet); // On retire la planète associée
+                }
+
 
                 canDragLine = true; // On peut créer une ligne depuis la planète de départ
                 break; // Comme nous avons trouve la planète touchée, on arrête la boucle for
@@ -174,6 +198,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 list_trajectories.get(trajectoryIndex).setEndPosition(currentStopPlanet.getPositionX(), currentStopPlanet.getPositionY());
                 currentStartPlanet.setLinkedPlanet(currentStopPlanet); // On link la planète d'arr à la planète de départ
                 currentStartPlanet.setMyTrajectory(list_trajectories.get(trajectoryIndex)); // on link la trajectoire à la planète de départ
+                currentStopPlanet.getListOfArrPlanets().add(currentStartPlanet);
+                Log.d("nombre de planètes rattachées ", String.valueOf(currentStopPlanet.getListOfArrPlanets().size()));
+
             }
             else { // Si on relâche dans la vide
                 list_trajectories.get(trajectoryIndex).reset();//on efface la ligne
@@ -262,6 +289,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         }
         for (int i = 0; i < list_trajectories.size(); i++) {
             list_trajectories.get(i).update();
+        }
+        for (int i = 0; i < list_travellers.size(); i++) {
+            list_travellers.get(i).update();
         }
     }
 }
