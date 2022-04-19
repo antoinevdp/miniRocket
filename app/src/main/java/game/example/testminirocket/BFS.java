@@ -1,78 +1,137 @@
-package game.example.testminirocket;
+package game.example.testminirocket;// JAVA program to print all
+// Java program to find shortest path in an undirected
+// graph
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 
-// Java program to print BFS traversal from a given source vertex.
-// BFS(int s) traverses vertices reachable from s.
-import java.io.*;
-import java.util.*;
+public class BFS {
 
-class Graph
-{
-    private int V;                              //number of nodes in the graph
-    private LinkedList<Integer> adj[];              //adjacency list
-    private Queue<Integer> queue;                   //maintaining a queue
-
-    Graph(int v)
+    // Driver Program
+    public static ArrayList<Integer> calculateShortestPath(int nb_connections, int source, int destination, ArrayList<ArrayList<Integer>> list_connections)
     {
-        V = v;
-        adj = new LinkedList[v];
-        for (int i=0; i<v; i++)
-        {
-            adj[i] = new LinkedList<>();
+
+        // Adjacency list for storing which vertices are connected
+        ArrayList<ArrayList<Integer>> adj =
+                new ArrayList<ArrayList<Integer>>(nb_connections);
+        for (int i = 0; i < nb_connections; i++) {
+            adj.add(new ArrayList<Integer>());
         }
-        queue = new LinkedList<Integer>();
+
+        // Creating graph given in the above diagram.
+        // add_edge function takes adjacency list, source
+        // and destination vertex as argument and forms
+        // an edge between them.
+        for (int i = 0; i < list_connections.size(); i++) {
+            addEdge(adj, list_connections.get(i).get(0), list_connections.get(i).get(1));
+        }
+        LinkedList<Integer> linked_list_best_path = printShortestDistance(adj, source, destination, nb_connections);
+        if (linked_list_best_path == null){
+            return null;
+        }else {
+            ArrayList<Integer> list_best_path = new ArrayList<>(linked_list_best_path);
+            Collections.reverse(list_best_path);
+            return list_best_path;
+        }
+
     }
 
-
-    void addEdge(int v,int w)
+    // function to form edge between two vertices
+    // source and dest
+    private static void addEdge(ArrayList<ArrayList<Integer>> adj, int i, int j)
     {
-        adj[v].add(w);                          //adding an edge to the adjacency list (edges are bidirectional in this example)
+        adj.get(i).add(j);
+        adj.get(j).add(i);
     }
 
-    void BFS(int n)
+    // function to print the shortest distance and path
+    // between source vertex and destination vertex
+    private static LinkedList<Integer> printShortestDistance(
+            ArrayList<ArrayList<Integer>> adj,
+            int s, int dest, int v)
     {
+        // predecessor[i] array stores predecessor of
+        // i and distance array stores distance of i
+        // from s
+        int pred[] = new int[v];
+        int dist[] = new int[v];
 
-        boolean nodes[] = new boolean[V];       //initialize boolean array for holding the data
-        int a = 0;
+        if (BFS(adj, s, dest, v, pred, dist) == false) {
+            System.out.println("Given source and destination" +
+                    "are not connected");
+            return null;
+        }
 
-        nodes[n]=true;
-        queue.add(n);                   //root node is added to the top of the queue
+        // LinkedList to store path
+        LinkedList<Integer> path = new LinkedList<Integer>();
+        int crawl = dest;
+        path.add(crawl);
+        while (pred[crawl] != -1) {
+            path.add(pred[crawl]);
+            crawl = pred[crawl];
+        }
 
-        while (queue.size() != 0)
-        {
-            n = queue.poll();             //remove the top element of the queue
-            System.out.print(n+" ");           //print the top element of the queue
+        // Print distance
+        System.out.println("Shortest path length is: " + dist[dest]);
 
-            for (int i = 0; i < adj[n].size(); i++)  //iterate through the linked list and push all neighbors into queue
-            {
-                a = adj[n].get(i);
-                if (!nodes[a])                    //only insert nodes into queue if they have not been explored already
-                {
-                    nodes[a] = true;
-                    queue.add(a);
+        // Print path
+        System.out.println("Path is ::");
+        for (int i = path.size() - 1; i >= 0; i--) {
+            System.out.print(path.get(i) + " ");
+        }
+        return path;
+    }
+
+    // a modified version of BFS that stores predecessor
+    // of each vertex in array pred
+    // and its distance from source in array dist
+    private static boolean BFS(ArrayList<ArrayList<Integer>> adj, int src,
+                               int dest, int v, int pred[], int dist[])
+    {
+        // a queue to maintain queue of vertices whose
+        // adjacency list is to be scanned as per normal
+        // BFS algorithm using LinkedList of Integer type
+        LinkedList<Integer> queue = new LinkedList<Integer>();
+
+        // boolean array visited[] which stores the
+        // information whether ith vertex is reached
+        // at least once in the Breadth first search
+        boolean visited[] = new boolean[v];
+
+        // initially all vertices are unvisited
+        // so v[i] for all i is false
+        // and as no path is yet constructed
+        // dist[i] for all i set to infinity
+        for (int i = 0; i < v; i++) {
+            visited[i] = false;
+            dist[i] = Integer.MAX_VALUE;
+            pred[i] = -1;
+        }
+
+        // now source is first to be visited and
+        // distance from source to itself should be 0
+        visited[src] = true;
+        dist[src] = 0;
+        queue.add(src);
+
+        // bfs Algorithm
+        while (!queue.isEmpty()) {
+            int u = queue.remove();
+            for (int i = 0; i < adj.get(u).size(); i++) {
+                if (visited[adj.get(u).get(i)] == false) {
+                    visited[adj.get(u).get(i)] = true;
+                    dist[adj.get(u).get(i)] = dist[u] + 1;
+                    pred[adj.get(u).get(i)] = u;
+                    queue.add(adj.get(u).get(i));
+
+                    // stopping condition (when we find
+                    // our destination)
+                    if (adj.get(u).get(i) == dest)
+                        return true;
                 }
             }
         }
-    }
-
-    public static void main(String args[])
-    {
-        Graph graph = new Graph(6);
-
-        graph.addEdge(0, 1);
-        graph.addEdge(0, 3);
-        graph.addEdge(0, 4);
-        graph.addEdge(4, 5);
-        graph.addEdge(3, 5);
-        graph.addEdge(1, 2);
-        graph.addEdge(1, 0);
-        graph.addEdge(2, 1);
-        graph.addEdge(4, 1);
-        graph.addEdge(3, 1);
-        graph.addEdge(5, 4);
-        graph.addEdge(5, 3);
-
-        System.out.println("The Breadth First Traversal of the graph is as follows :");
-
-        graph.BFS(0);
+        return false;
     }
 }
+// This code is contributed by Sahil Vaid

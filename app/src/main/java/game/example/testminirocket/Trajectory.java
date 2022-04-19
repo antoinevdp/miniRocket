@@ -9,17 +9,23 @@ import androidx.core.content.ContextCompat;
 import com.minirocket.game.R;
 
 public class Trajectory {
+    private int id;
     private double startPosX;
     private double startPosY;
     private double endPosX;
     private double endPosY;
+    private Planet startPlanet;
+    private Planet endPlanet;
     private final Paint paint = new Paint();
 
-    public Trajectory(double startPosX, double startPosY, double endPosX, double endPosY) {
+    public Trajectory(int id, double startPosX, double startPosY, double endPosX, double endPosY, Planet startPlanet, Planet endPlanet) {
+        this.id = id;
         this.startPosX = startPosX;
         this.startPosY = startPosY;
         this.endPosX = endPosX;
         this.endPosY = endPosY;
+        this.startPlanet = startPlanet;
+        this.endPlanet = endPlanet;
 
         paint.setColor(Color.GREEN);
     }
@@ -53,5 +59,29 @@ public class Trajectory {
         this.startPosY = y;
         this.endPosX = x;
         this.endPosY = y;
+    }
+
+    public Planet getStartPlanet() {
+        return startPlanet;
+    }
+
+    public void setStartPlanet(Planet startPlanet) {
+        this.startPlanet = startPlanet;
+    }
+
+    public Planet getEndPlanet() {
+        return endPlanet;
+    }
+
+    public void setEndPlanet(Planet endPlanet) {
+        this.endPlanet = endPlanet;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

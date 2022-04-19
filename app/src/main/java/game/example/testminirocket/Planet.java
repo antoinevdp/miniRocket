@@ -11,6 +11,7 @@ import com.minirocket.game.R;
 import java.util.ArrayList;
 
 public class Planet extends GameObject{
+    public int id;
     private double positionX;
     private double positionY;
     public double radius;
@@ -26,8 +27,9 @@ public class Planet extends GameObject{
     public Planet linkedPlanet = null;// La planète d'arr associée à cette planète
 
     // Constructeur
-    public Planet(Context context, double positionX, double positionY, double radius, String infos, Trajectory my_trajectory, ArrayList<Traveller> list_travellers){
+    public Planet(Context context, int id, double positionX, double positionY, double radius, String infos, Trajectory my_trajectory, ArrayList<Traveller> list_travellers){
         super(positionX, positionY);
+        this.id = id;
         this.positionX = positionX;
         this.positionY = positionY;
         this.radius = radius;
@@ -61,7 +63,7 @@ public class Planet extends GameObject{
     }
     // Pour unset la trajectoire de sortie de cette planète
     public void unsetMyTrajectory(){
-        this.my_trajectory = new Trajectory(0,0,0,0);
+        this.my_trajectory = new Trajectory(-1, 0,0,0,0, null, null);
     }
     // Pour set la planète associée de cette planète
     public void setLinkedPlanet(Planet linkedPlanet){
