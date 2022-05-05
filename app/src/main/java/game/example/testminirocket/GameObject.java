@@ -1,6 +1,7 @@
 package game.example.testminirocket;
-
+// Cette classe est utile pour tout les objets du jeu (Planètes, trajectoires, etc...)
 public class GameObject {
+    // Coordonées X et Y sur le canvas
     protected double coordX;
     protected double coordY;
 
@@ -8,7 +9,7 @@ public class GameObject {
         this.coordX = coordX;
         this.coordY = coordY;
     }
-
+    // Retourne la distance entre deux objets
     protected static double getDistanceBetweenObjects(GameObject gameObject1, GameObject gameObject2){
         double maxBtwCoordX = Math.max(gameObject1.getPositionX(), gameObject2.getPositionX());
         double maxBtwCoordY = Math.max(gameObject1.getPositionY(), gameObject2.getPositionY());
@@ -17,7 +18,7 @@ public class GameObject {
         // Pyhtagore pour déterminer la distance entre les 2 planètes
         return Math.sqrt(Math.pow(maxBtwCoordX - minBtwCoordX, 2) + Math.pow(maxBtwCoordY - minBtwCoordY, 2));
     }
-
+    // Retourne la position de l'objet
     protected double getPositionX(){ return this.coordX; }
     protected double getPositionY(){ return this.coordY; }
 }

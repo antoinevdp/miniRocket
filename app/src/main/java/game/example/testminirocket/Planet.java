@@ -11,10 +11,8 @@ import com.minirocket.game.R;
 import java.util.ArrayList;
 
 public class Planet extends GameObject{
-    public int id;
-    private double positionX;
-    private double positionY;
-    public double radius;
+    public int id; // id unique de la planète
+    public double radius; // Rayon de la planète
     private Context context;
     private String infos; // infos sur la planète
     private Paint paint;
@@ -27,11 +25,11 @@ public class Planet extends GameObject{
     public Planet linkedPlanet = null;// La planète d'arr associée à cette planète
 
     // Constructeur
-    public Planet(Context context, int id, double positionX, double positionY, double radius, String infos, Trajectory my_trajectory, ArrayList<Traveller> list_travellers){
-        super(positionX, positionY);
+    public Planet(Context context, int id, double coordX, double coordY, double radius, String infos, Trajectory my_trajectory, ArrayList<Traveller> list_travellers){
+        super(coordX, coordY);
         this.id = id;
-        this.positionX = positionX;
-        this.positionY = positionY;
+        this.coordX = coordX;
+        this.coordY = coordY;
         this.radius = radius;
         this.my_trajectory = my_trajectory;
         this.context = context;
@@ -45,17 +43,17 @@ public class Planet extends GameObject{
         paint.setColor(color);
 
     }
-
+     // Affichage
     public void draw(Canvas canvas) {
-        canvas.drawCircle((float)positionX, (float)positionY, (float)radius, paint);
+        canvas.drawCircle((float)coordX, (float)coordY, (float)radius, paint);
         this.my_trajectory.draw(canvas);
     }
     // pour changer la planète de position
     public void changePosition(double positionX, double positionY){
         int color = ContextCompat.getColor(context, R.color.purple_200);
         this.paint.setColor(color);
-        this.positionX = positionX;
-        this.positionY = positionY;
+        this.coordX = positionX;
+        this.coordY = positionY;
     }
     // Pour set la trajectoire de sortie de cette planète
     public void setMyTrajectory(Trajectory my_trajectory){

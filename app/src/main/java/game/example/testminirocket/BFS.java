@@ -1,43 +1,38 @@
-package game.example.testminirocket;// JAVA program to print all
-// Java program to find shortest path in an undirected
-// graph
+package game.example.testminirocket;
+// class pour connaître le chemin le plus rapide pour aller d'un point A à un point B
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 
 public class BFS {
 
-    // Driver Program
     public static ArrayList<Integer> calculateShortestPath(int nb_connections, int source, int destination, ArrayList<ArrayList<Integer>> list_connections)
     {
 
-        // Adjacency list for storing which vertices are connected
+        // Liste pour sauvegarder quels planètes sont connectées
         ArrayList<ArrayList<Integer>> adj =
                 new ArrayList<ArrayList<Integer>>(nb_connections);
         for (int i = 0; i < nb_connections; i++) {
             adj.add(new ArrayList<Integer>());
         }
 
-        // Creating graph given in the above diagram.
-        // add_edge function takes adjacency list, source
-        // and destination vertex as argument and forms
-        // an edge between them.
+        // Boucle for pour ajouter les connections entre les planètes à partir de la liste des connections en paramètre
         for (int i = 0; i < list_connections.size(); i++) {
             addEdge(adj, list_connections.get(i).get(0), list_connections.get(i).get(1));
         }
+        // Résultat de la recherche
         LinkedList<Integer> linked_list_best_path = printShortestDistance(adj, source, destination, nb_connections);
-        if (linked_list_best_path == null){
-            return null;
-        }else {
-            ArrayList<Integer> list_best_path = new ArrayList<>(linked_list_best_path);
-            Collections.reverse(list_best_path);
-            return list_best_path;
+        if (linked_list_best_path == null){ // Si on n'a pas trouvé un chemin
+            return null; // on return null
+        }else { // Si on a trouvé un chemin
+            ArrayList<Integer> list_best_path = new ArrayList<>(linked_list_best_path); // On switch d'une linkedList à un ArrayList
+            Collections.reverse(list_best_path); // On reverse la liste pour avoir le résultat dans le bon sens
+            return list_best_path; // on return la liste du chemin trouvé
         }
 
     }
 
-    // function to form edge between two vertices
-    // source and dest
+    // Ajouter une connection
     private static void addEdge(ArrayList<ArrayList<Integer>> adj, int i, int j)
     {
         adj.get(i).add(j);
