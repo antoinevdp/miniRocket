@@ -28,7 +28,7 @@ public class MainActivityTest extends Activity {
         super.onCreate(savedInstanceState);
 
         // Set content view to game, so that objects in the Game class can be rendered to the screen
-        game = new Game(this, 6, 4);
+        game = new Game(this, 10, 4);
         setContentView(game);
     }
 

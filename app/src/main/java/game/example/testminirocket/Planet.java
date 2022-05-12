@@ -1,6 +1,7 @@
 package game.example.testminirocket;
 
 import android.content.Context;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
@@ -16,6 +17,7 @@ public class Planet extends GameObject{
     private Context context;
     private String infos; // infos sur la planète
     private Paint paint;
+    private int randomAndroidColor;
 
     private ArrayList<Traveller> list_travellers = new ArrayList<Traveller>(); // Liste des voyageurs sur la planète
     private ArrayList<Planet> list_of_arr_planets = new ArrayList<Planet>(); // Liste des voyageurs sur la planète
@@ -25,7 +27,7 @@ public class Planet extends GameObject{
     public Planet linkedPlanet = null;// La planète d'arr associée à cette planète
 
     // Constructeur
-    public Planet(Context context, int id, double coordX, double coordY, double radius, String infos, Trajectory my_trajectory, ArrayList<Traveller> list_travellers){
+    public Planet(Context context, int id, double coordX, double coordY, double radius, int randomAndroidColor, String infos, Trajectory my_trajectory, ArrayList<Traveller> list_travellers){
         super(coordX, coordY);
         this.id = id;
         this.coordX = coordX;
@@ -34,13 +36,12 @@ public class Planet extends GameObject{
         this.my_trajectory = my_trajectory;
         this.context = context;
         this.infos = infos;
-        this.paint = paint;
+        this.randomAndroidColor = randomAndroidColor;
 
         this.list_travellers = list_travellers;
-
-        paint = new Paint();
-        int color = ContextCompat.getColor(context, R.color.planet_color);
-        paint.setColor(color);
+        this.paint = new Paint();
+        //this.paint.setStyle(Paint.Style.STROKE);
+        this.paint.setColor(this.randomAndroidColor);
 
     }
      // Affichage
@@ -79,6 +80,10 @@ public class Planet extends GameObject{
         return this.list_of_arr_planets;
     }
     //update
+    public int getRandomAndroidColor(){
+        return this.randomAndroidColor;
+    }
+
     public void update() {
         //my_trajectory.update();
     }

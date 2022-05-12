@@ -18,6 +18,7 @@ public class Traveller extends GameObject{
     private double velocityY; // vitesse en y
 
     public boolean canGo; // Boolean pour avancer ou non
+    public boolean canBeDestroyed;
 
     private Planet current_planet; // Planète actuelle
     private Planet target_planet; // Planète où l'on veut aller
@@ -38,6 +39,7 @@ public class Traveller extends GameObject{
         this.listAllPlanets = listAllPlanets;
         this.max_time = max_time;
         this.canGo = false;
+        this.canBeDestroyed = false;
         this.velocityX = 0;
         this.velocityY = 0;
 
@@ -51,9 +53,8 @@ public class Traveller extends GameObject{
         this.coordX = coordX_rand; // Set les coordonées
         this.coordY = coordY_rand;
 
-        paint = new Paint();
-        int color = ContextCompat.getColor(context, R.color.traveller_color);
-        paint.setColor(color);
+        this.paint = new Paint();
+        paint.setColor(this.target_planet.getRandomAndroidColor());
     }
     // Affichage
     public void draw(Canvas canvas) {
@@ -64,7 +65,9 @@ public class Traveller extends GameObject{
         if (this.path_to_take != null){ // Si un chemin a été trouvé
             if (this.path_to_take.size() == counter){ // Si le traveller est arrivé à destination
                 this.canGo = false; // on n'avance plus
+                this.canBeDestroyed = true;
                 unsetPathToTake(); // Il n'y a plus de chemin à prendre
+
             }else { // Si le traveller n'est pas encore arrivé
                 this.canGo = true; // Il peut voyager
                 this.target_planet = this.listAllPlanets.get(this.path_to_take.get(counter)); // Sa planète cible est la planète suivante dans la liste des planètes du chemin à prendre

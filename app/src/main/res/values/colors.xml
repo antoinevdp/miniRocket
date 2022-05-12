@@ -9,6 +9,52 @@
     <color name="white">#FFFFFFFF</color>
     <color name="menu_btn">#405F73</color>
     <color name="planet_color">#FFF</color>
+
+    <item name="blue" type="color">#B73409</item>
+    <item name="purple" type="color">#FFFDF1</item>
+    <item name="green" type="color">#EA98B1</item>
+    <item name="orange" type="color">#813923</item>
+    <item name="red" type="color">#B7B500</item>
+    <item name="darkblue" type="color">#529E7D</item>
+    <item name="darkpurple" type="color">#F21905</item>
+    <item name="darkgreen" type="color">#413B38</item>
+    <item name="darkorange" type="color">#315CA7</item>
+    <item name="red_orange" type="color">#EEB471</item>
+    <item name="orange_red" type="color">#862A3E</item>
+    <item name="ora" type="color">#92C3EA</item>
+    <item name="blue_grey" type="color">#A8ABAD</item>
+    <item name="violet" type="color">#FCD4A4</item>
+    <item name="violet_light" type="color">#FF81D0</item>
+    <item name="violet_light_light" type="color">#E95925</item>
+    <item name="rose" type="color">#0C306C</item>
+    <item name="greennn" type="color">#68F205</item>
+    <item name="yellow_weird" type="color">#FCC511</item>
+
+
+    <integer-array name="planet_colors">
+        <item>@color/blue</item>
+        <item>@color/purple</item>
+        <item>@color/green</item>
+        <item>@color/orange</item>
+        <item>@color/red</item>
+        <item>@color/darkblue</item>
+        <item>@color/darkpurple</item>
+        <item>@color/darkgreen</item>
+        <item>@color/darkorange</item>
+        <item>@color/red_orange</item>
+        <item>@color/orange_red</item>
+        <item>@color/ora</item>
+        <item>@color/blue_grey</item>
+        <item>@color/violet</item>
+        <item>@color/violet_light</item>
+        <item>@color/violet_light_light</item>
+        <item>@color/rose</item>
+        <item>@color/greennn</item>
+        <item>@color/yellow_weird</item>
+
+
+    </integer-array>
+
     <color name="traveller_color">#7FB069</color>
 
 </resources>
