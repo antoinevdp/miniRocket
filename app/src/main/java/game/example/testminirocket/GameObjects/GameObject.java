@@ -1,4 +1,4 @@
-package game.example.testminirocket;
+package game.example.testminirocket.GameObjects;
 // Cette classe est utile pour tout les objets du jeu (Planètes, trajectoires, etc...)
 public class GameObject {
     // Coordonées X et Y sur le canvas
@@ -19,6 +19,6 @@ public class GameObject {
         return Math.sqrt(Math.pow(maxBtwCoordX - minBtwCoordX, 2) + Math.pow(maxBtwCoordY - minBtwCoordY, 2));
     }
     // Retourne la position de l'objet
-    protected double getPositionX(){ return this.coordX; }
-    protected double getPositionY(){ return this.coordY; }
+    public double getPositionX(){ return this.coordX; }
+    public double getPositionY(){ return this.coordY; }
 }

@@ -1,13 +1,8 @@
-package game.example.testminirocket;
+package game.example.testminirocket.GameObjects;
 
 import android.content.Context;
-import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-
-import androidx.core.content.ContextCompat;
-
-import com.minirocket.game.R;
 
 import java.util.ArrayList;
 
@@ -26,6 +21,10 @@ public class Planet extends GameObject{
     public Trajectory my_trajectory; // La trajectoire associée à cette planète
     public Planet linkedPlanet = null;// La planète d'arr associée à cette planète
 
+    private float currentStrokeWidth = 3f;
+    private boolean up = true;
+
+
     // Constructeur
     public Planet(Context context, int id, double coordX, double coordY, double radius, int randomAndroidColor, String infos, Trajectory my_trajectory, ArrayList<Traveller> list_travellers){
         super(coordX, coordY);
@@ -39,23 +38,39 @@ public class Planet extends GameObject{
         this.randomAndroidColor = randomAndroidColor;
 
         this.list_travellers = list_travellers;
-        this.paint = new Paint();
+        this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         //this.paint.setStyle(Paint.Style.STROKE);
+        //this.paint.setStrokeWidth(currentStrokeWidth);
+        //.setPaint(new GradientPaint(0,0,getBackground(),width,0,controlColor));
         this.paint.setColor(this.randomAndroidColor);
 
     }
      // Affichage
     public void draw(Canvas canvas) {
+        /*float increment = 0.2f;
+        float maxValue = 14f;
+        float minValue = 3f;
+
+        if (up && currentStrokeWidth <= maxValue) {
+            currentStrokeWidth += increment;
+            if (currentStrokeWidth >= maxValue) {
+                up = false;
+            }
+        } else {
+            up = false;
+            currentStrokeWidth -= increment;
+            if (currentStrokeWidth <= minValue) {
+                up = true;
+            }
+        }*/
+        //Bitmap img = BitmapFactory.decodeResource(context.getResources(), R.mipmap.galaxie);
+        //canvas.drawBitmap(img, null, new RectF(50, 50, 200, 200), null);
         canvas.drawCircle((float)coordX, (float)coordY, (float)radius, paint);
         this.my_trajectory.draw(canvas);
+
+        //this.paint.setStrokeWidth(currentStrokeWidth);
     }
-    // pour changer la planète de position
-    public void changePosition(double positionX, double positionY){
-        int color = ContextCompat.getColor(context, R.color.purple_200);
-        this.paint.setColor(color);
-        this.coordX = positionX;
-        this.coordY = positionY;
-    }
+
     // Pour set la trajectoire de sortie de cette planète
     public void setMyTrajectory(Trajectory my_trajectory){
         this.my_trajectory = my_trajectory;
@@ -85,7 +100,6 @@ public class Planet extends GameObject{
     }
 
     public void update() {
-        //my_trajectory.update();
     }
 
 }

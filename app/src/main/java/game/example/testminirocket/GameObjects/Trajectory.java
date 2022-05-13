@@ -1,12 +1,8 @@
-package game.example.testminirocket;
+package game.example.testminirocket.GameObjects;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-
-import androidx.core.content.ContextCompat;
-
-import com.minirocket.game.R;
 
 public class Trajectory {
     private int id; // Id unique de la trajectoire
@@ -17,6 +13,8 @@ public class Trajectory {
     private Planet startPlanet; // Planète de départ
     private Planet endPlanet; // Planète de fin
     private final Paint paint = new Paint();
+
+
     // Constructeur
     public Trajectory(int id, double startPosX, double startPosY, double endPosX, double endPosY, Planet startPlanet, Planet endPlanet) {
         this.id = id;
@@ -35,6 +33,7 @@ public class Trajectory {
     }
     // Update
     public void update() {
+
 
     }
     public void setStartPosition(double startPosX, double startPosY) {

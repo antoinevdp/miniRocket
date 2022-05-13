@@ -1,7 +1,10 @@
-package game.example.testminirocket;
+package game.example.testminirocket.GameObjects;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.SurfaceHolder;
+
+import game.example.testminirocket.GameObjects.Game;
 
 public class GameLoop extends Thread{
     public static final double MAX_UPS = 60.0;
@@ -27,16 +30,14 @@ public class GameLoop extends Thread{
     }
 
     public void startLoop() {
+        Log.d("GameLoop.java", "startLoop()");
         isRunning = true;
         start();
     }
 
-    public void stopLoop() {
-        isRunning = false;
-    }
-
     @Override
     public void run(){
+        Log.d("GameLoop.java", "run()");
         super.run();
 
         // Declare time and cycle count variables
@@ -102,6 +103,16 @@ public class GameLoop extends Thread{
                 frameCount = 0;
                 startTime = System.currentTimeMillis();
             }
+        }
+    }
+
+    public void stopLoop() {
+        Log.d("GameLoop.java", "stopLoop()");
+        isRunning = false;
+        try{
+            join();
+        } catch (InterruptedException e){
+            e.printStackTrace();
         }
     }
 }

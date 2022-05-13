@@ -56,5 +56,8 @@
     </integer-array>
 
     <color name="traveller_color">#7FB069</color>
+    <color name="gameOver">#E71B0C</color>
+    <color name="timeBarColor">#696767</color>
+    <color name="timeBarColorP">#3ABE3F</color>
 
 </resources>
