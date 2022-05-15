@@ -51,8 +51,12 @@
         <item>@color/rose</item>
         <item>@color/greennn</item>
         <item>@color/yellow_weird</item>
+    </integer-array>
 
 
+    <integer-array name="planet_sprite">
+        <item>@drawable/ea98b1_planet</item>
+        <item>@drawable/fffdf1_planet</item>
     </integer-array>
 
     <color name="traveller_color">#7FB069</color>

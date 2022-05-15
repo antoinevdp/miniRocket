@@ -12,6 +12,11 @@ import game.example.testminirocket.GamePanels.TimeBar;
 public class Traveller extends GameObject{
     private static final double SPEED_PIXELS_PER_SECOND = 100;
     private static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
+    private static final double SPAWN_PER_MINUTE = 20;
+    private static final double SPAWN_PER_SECOND = SPAWN_PER_MINUTE / 60.0;
+    private static final double UPDATE_PER_SPAWN = GameLoop.MAX_UPS / SPAWN_PER_SECOND;
+    private static double updateUntilNextSpawn = UPDATE_PER_SPAWN;
+
 
     private TimeBar timeBar;
 
@@ -70,6 +75,18 @@ public class Traveller extends GameObject{
         this.paint = new Paint();
         paint.setColor(this.final_target_planet.getRandomAndroidColor());
     }
+
+    // Check if readyToSpawn
+    public static boolean readyToSpawn() {
+        if(updateUntilNextSpawn <= 0){
+            updateUntilNextSpawn += UPDATE_PER_SPAWN;
+            return true;
+        }else {
+            updateUntilNextSpawn --;
+            return false;
+        }
+    }
+
     // Affichage
     public void draw(Canvas canvas) {
         canvas.drawCircle((float)this.coordX, (float)this.coordY, 10, paint);

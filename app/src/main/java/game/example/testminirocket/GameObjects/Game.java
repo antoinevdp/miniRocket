@@ -20,6 +20,8 @@ import java.util.Random;
 import game.example.testminirocket.BFS;
 import game.example.testminirocket.GamePanels.GameOver;
 import game.example.testminirocket.GamePanels.InfosDisplay;
+import game.example.testminirocket.graphics.Animator;
+import game.example.testminirocket.graphics.SpriteSheet;
 
 
 /*
@@ -42,12 +44,23 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     public ArrayList<Planet> list_planets = new ArrayList<Planet>(); // liste des planète du niveau
     public ArrayList<Trajectory> list_trajectories = new ArrayList<Trajectory>(); // liste des Trajets entre planètes
     public ArrayList<Traveller> list_travellers = new ArrayList<Traveller>(); // liste des Trajets entre planètes
+    public ArrayList<Asteroid> list_asteroids = new ArrayList<Asteroid>(); // liste des Trajets entre planètes
+
     public ArrayList<ArrayList<Integer>> list_connections = new ArrayList<>();
 
     private InfosDisplay infosDisplay;
     private GameOver gameOver;
 
     private int[] androidColors = getResources().getIntArray(R.array.planet_colors);
+    private int[] spriteList = new int[]{
+            R.drawable.ea98b1_planet,
+            R.drawable.fffdf1_planet,
+            R.drawable.n813923_planet,
+            R.drawable.test_planet,
+            R.drawable.n936292805_planet,
+            R.drawable.n936292805,
+            R.drawable.n2098505015
+    };
 
     private int total_number_planets = 0;
 
@@ -65,25 +78,16 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         infosDisplay = new InfosDisplay(context, 2000, 50);
 
         //Init GameOver
-        gameOver = new GameOver(getContext());
+        gameOver = new GameOver(context);
 
 
         //initialisationd es planètes et ajout dans la liste des planètes
         generatePlanets(numberOfPlanets, facteurDeDistance);
-
+        //SpriteSheet spriteSheet = new SpriteSheet(context);
+        //Animator animator = new Animator(spriteSheet.getAsteroidSpriteArray());
+        //Asteroid asteroid = new Asteroid(context, 150, 150, list_trajectories.get(0), 1, animator);
+        //list_asteroids.add(asteroid);
         // initialisation des trajectoires et ajout dans la liste des trajectoires
-
-        for (int i = 0; i <= list_planets.size(); i++) {
-            Random rand = new Random(); //instance of random class
-            int spawn_planet_random = rand.nextInt(list_planets.size());
-            int target_planet_random = rand.nextInt(list_planets.size());
-            while (spawn_planet_random == target_planet_random){
-                target_planet_random = rand.nextInt(list_planets.size());
-            }
-
-            Traveller traveller_test = new Traveller(getContext(), 0,0, 15, list_planets.get(spawn_planet_random), list_planets.get(target_planet_random), list_planets);
-            list_travellers.add(traveller_test);
-        }
 
         setFocusable(true);
     }
@@ -151,6 +155,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 list_travellers.get(i).draw(canvas);
             }
         }
+        if (list_asteroids.size()>0){
+            for (int i = 0; i < list_asteroids.size(); i++) {
+                list_asteroids.get(i).draw(canvas);
+            }
+        }
 
         infosDisplay.draw(canvas);
 
@@ -165,6 +174,23 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         // Stop updating if gameover
         if (isGameOver){
             return;
+        }
+
+        //Spawn Traveller if its time to Spawn
+        if (Traveller.readyToSpawn()){
+            Random rand = new Random(); //instance of random class
+            int spawn_planet_random = rand.nextInt(list_planets.size());
+            int target_planet_random = rand.nextInt(list_planets.size());
+            while (spawn_planet_random == target_planet_random){
+                target_planet_random = rand.nextInt(list_planets.size());
+            }
+
+            Traveller traveller_test = new Traveller(getContext(), 0,0, 15, list_planets.get(spawn_planet_random), list_planets.get(target_planet_random), list_planets);
+            list_travellers.add(traveller_test);
+            ArrayList<Integer> list_path = BFS.calculateShortestPath(total_number_planets, traveller_test.getCurrent_planet().id, traveller_test.getFinal_Target_planet().id, list_connections);
+            if (list_path != null){
+                traveller_test.setPathToTake(list_path);
+            }
         }
 
         //update
@@ -188,6 +214,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 list_travellers.get(i).update();
             }
         }
+        for (int i = 0; i < list_asteroids.size(); i++) {
+            list_asteroids.get(i).update();
+        }
+        
         infosDisplay.setNb_trajectories(remainingTrajCounter);
     }
 
@@ -277,6 +307,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                         if (!list_travellers.get(i).isTravelling){
                             list_travellers.get(i).setPathToTake(list_path);
                             System.out.println(list_path);
+                        }else if(list_path.size() <= list_travellers.get(i).getPathToTake().size() && list_path.contains(list_travellers.get(i).getNext_Target_planet().id)) {
+                            list_travellers.get(i).setPathToTake(list_path);
                         }
                     }
                 }
@@ -306,7 +338,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         int coordMinY = 100;
         int coordMaxX = 1800;
         int coordMaxY = 1000;
-        int minRadius = 30;
+        int minRadius = 50;
         int maxRadius = 100;
         // Protection si des planètes n'arrive pas à spawn
         int protection = 0;
@@ -351,9 +383,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 t_list.add(0);
                 t_list.add(0);
                 list_connections.add(t_list);
-                Planet planet = new Planet(getContext(), id, coordX_rand, coordY_rand, radius_rand, randomAndroidColor, "", t_trajectory, list_travellers);
+                //Asteroid asteroid = new Asteroid(context, 150, 150, list_trajectories.get(0), 1, animator);
+                SpriteSheet spriteSheet_planet = new SpriteSheet(getContext(), index, spriteList);
+                Animator animator = new Animator(spriteSheet_planet.getPlanetSpriteArray());
+                Planet planet = new Planet(getContext(), id, coordX_rand, coordY_rand, radius_rand, randomAndroidColor, "", t_trajectory, list_travellers, animator);
                 list_planets.add(planet);
                 androidColors = removeTheElement(androidColors, index);
+                spriteList = removeTheElement(spriteList, index);
+
 
             }
             overlapping = false; // on reset

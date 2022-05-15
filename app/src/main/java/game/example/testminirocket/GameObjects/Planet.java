@@ -6,6 +6,9 @@ import android.graphics.Paint;
 
 import java.util.ArrayList;
 
+import game.example.testminirocket.graphics.Animator;
+import game.example.testminirocket.graphics.Sprite;
+
 public class Planet extends GameObject{
     public int id; // id unique de la planète
     public double radius; // Rayon de la planète
@@ -13,6 +16,9 @@ public class Planet extends GameObject{
     private String infos; // infos sur la planète
     private Paint paint;
     private int randomAndroidColor;
+
+    private Animator animator;
+    private PlanetState planetState;
 
     private ArrayList<Traveller> list_travellers = new ArrayList<Traveller>(); // Liste des voyageurs sur la planète
     private ArrayList<Planet> list_of_arr_planets = new ArrayList<Planet>(); // Liste des voyageurs sur la planète
@@ -22,11 +28,13 @@ public class Planet extends GameObject{
     public Planet linkedPlanet = null;// La planète d'arr associée à cette planète
 
     private float currentStrokeWidth = 3f;
-    private boolean up = true;
+    public boolean canAnimate = true;
+    public boolean up = true;
+
 
 
     // Constructeur
-    public Planet(Context context, int id, double coordX, double coordY, double radius, int randomAndroidColor, String infos, Trajectory my_trajectory, ArrayList<Traveller> list_travellers){
+    public Planet(Context context, int id, double coordX, double coordY, double radius, int randomAndroidColor, String infos, Trajectory my_trajectory, ArrayList<Traveller> list_travellers, Animator animator){
         super(coordX, coordY);
         this.id = id;
         this.coordX = coordX;
@@ -36,18 +44,21 @@ public class Planet extends GameObject{
         this.context = context;
         this.infos = infos;
         this.randomAndroidColor = randomAndroidColor;
+        this.animator = animator;
+        this.planetState = new PlanetState(this);
 
         this.list_travellers = list_travellers;
         this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        //this.paint.setStyle(Paint.Style.STROKE);
-        //this.paint.setStrokeWidth(currentStrokeWidth);
+        this.paint.setStyle(Paint.Style.STROKE);
+        this.paint.setStrokeWidth(currentStrokeWidth);
         //.setPaint(new GradientPaint(0,0,getBackground(),width,0,controlColor));
         this.paint.setColor(this.randomAndroidColor);
 
     }
-     // Affichage
+
+    // Affichage
     public void draw(Canvas canvas) {
-        /*float increment = 0.2f;
+        float increment = 0.2f;
         float maxValue = 14f;
         float minValue = 3f;
 
@@ -62,13 +73,14 @@ public class Planet extends GameObject{
             if (currentStrokeWidth <= minValue) {
                 up = true;
             }
-        }*/
+        }
         //Bitmap img = BitmapFactory.decodeResource(context.getResources(), R.mipmap.galaxie);
         //canvas.drawBitmap(img, null, new RectF(50, 50, 200, 200), null);
         canvas.drawCircle((float)coordX, (float)coordY, (float)radius, paint);
         this.my_trajectory.draw(canvas);
 
-        //this.paint.setStrokeWidth(currentStrokeWidth);
+        this.paint.setStrokeWidth(currentStrokeWidth);
+        animator.draw(canvas, this);
     }
 
     // Pour set la trajectoire de sortie de cette planète
@@ -100,6 +112,11 @@ public class Planet extends GameObject{
     }
 
     public void update() {
+        planetState.update();
+    }
+
+    public PlanetState getPlanetState(){
+        return planetState;
     }
 
 }
