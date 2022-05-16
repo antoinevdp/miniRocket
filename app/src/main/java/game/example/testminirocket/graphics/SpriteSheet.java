@@ -16,29 +16,36 @@ public class SpriteSheet {
     private int counter = 0;
     BitmapFactory.Options bitmapOptions;
 
-    public SpriteSheet(Context context, int index, int[] spriteList){
+    public SpriteSheet(Context context){
         this.context = context;
         bitmapOptions = new BitmapFactory.Options();
         bitmapOptions.inScaled = false;
+
+        bitmap = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.ea98b1_planet, bitmapOptions);
+
+    }
+
+    public Sprite[] getPlanetSpriteArray(int index, int[] spriteList){
         Log.d("index", String.valueOf(index));
         for (int i = 0; i < spriteList.length; i++) {
             if (index == i){
                 Log.d("found", String.valueOf(i));
                 bitmap = BitmapFactory.decodeResource(this.context.getResources(), spriteList[i], bitmapOptions);
-                return;
+                break;
             }
         }
-        bitmap = BitmapFactory.decodeResource(this.context.getResources(), spriteList[0], bitmapOptions);
-
-    }
-
-    public Sprite[] getPlanetSpriteArray(){
         Sprite[] spriteArray = new Sprite[50];
         for (int i = 0; i < spriteArray.length; i++) {
             spriteArray[i] = new Sprite(this, new Rect(i*100, 0, (i+1)*100, 100));
         }
-
-
+        return spriteArray;
+    }
+    public Sprite[] getAsteroidSpriteArray(){
+        Sprite[] spriteArray = new Sprite[50];
+        for (int i = 0; i < spriteArray.length; i++) {
+            spriteArray[i] = new Sprite(this, new Rect(i*100, 0, (i+1)*100, 100));
+        }
+        bitmap = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.asteroid_sprite, bitmapOptions);
         return spriteArray;
     }
 

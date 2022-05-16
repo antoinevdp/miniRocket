@@ -31,12 +31,15 @@ Responsible of rendering, updating, etc...
  */
 
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
+    private static final int SCORE_PER_ARRIVED_TRAVELLER = 50;
     private GameLoop gameLoop;
 
     private boolean canDragLine = false; // peut on tracer la ligne en maintenant le doigt
     private boolean canLeaveLine = false; // peut on relâcher la ligne pour a créée
     private boolean overlapping = false; // Boolean permettant de savoir si la planète que l'on veut faire spawn touche une autre
     private boolean isGameOver;
+
+    private int score;
 
     private Planet currentStartPlanet; // Planète où commence la ligne
     private Planet currentStopPlanet; // Planète où finie la ligne
@@ -47,9 +50,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     public ArrayList<Asteroid> list_asteroids = new ArrayList<Asteroid>(); // liste des Trajets entre planètes
 
     public ArrayList<ArrayList<Integer>> list_connections = new ArrayList<>();
+    public ArrayList<Integer> list_traj_drawn = new ArrayList<>();
 
     private InfosDisplay infosDisplay;
     private GameOver gameOver;
+
+    int remainingTrajCounter;
 
     private int[] androidColors = getResources().getIntArray(R.array.planet_colors);
     private int[] spriteList = new int[]{
@@ -80,14 +86,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         //Init GameOver
         gameOver = new GameOver(context);
 
-
         //initialisationd es planètes et ajout dans la liste des planètes
         generatePlanets(numberOfPlanets, facteurDeDistance);
-        //SpriteSheet spriteSheet = new SpriteSheet(context);
-        //Animator animator = new Animator(spriteSheet.getAsteroidSpriteArray());
-        //Asteroid asteroid = new Asteroid(context, 150, 150, list_trajectories.get(0), 1, animator);
-        //list_asteroids.add(asteroid);
+
         // initialisation des trajectoires et ajout dans la liste des trajectoires
+        this.remainingTrajCounter = list_trajectories.size();
+        this.score = 0;
 
         setFocusable(true);
     }
@@ -192,19 +196,32 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 traveller_test.setPathToTake(list_path);
             }
         }
+        if (Asteroid.readyToSpawn() && remainingTrajCounter <= 3){
+            Random generator = new Random();
+            int randomIndex = generator.nextInt(list_traj_drawn.size());
+            int rand_trajectory = list_traj_drawn.get(randomIndex);
+            Log.d("rand_traj", String.valueOf(rand_trajectory));
+            SpriteSheet spriteSheet = new SpriteSheet(getContext());
+            Animator animator = new Animator(spriteSheet.getAsteroidSpriteArray());
+            Asteroid asteroid = new Asteroid(getContext(), 150, 150, list_trajectories.get(rand_trajectory), 1, animator);
+            list_asteroids.add(asteroid);
+        }
 
         //update
-        int remainingTrajCounter = list_trajectories.size();
+        int t_remaining = list_trajectories.size();
         for (int i = 0; i < list_planets.size(); i++) {
             list_planets.get(i).update();
-            if (list_planets.get(i).isLinkedWithPlanet()) remainingTrajCounter--;
+            if (list_planets.get(i).isLinkedWithPlanet()) t_remaining--;
         }
+        this.remainingTrajCounter = t_remaining;
         for (int i = 0; i < list_trajectories.size(); i++) {
             list_trajectories.get(i).update();
         }
         for (int i = 0; i < list_travellers.size(); i++) {
             if(list_travellers.get(i).hasArrived){
                 list_travellers.remove(list_travellers.get(i));
+                this.score += SCORE_PER_ARRIVED_TRAVELLER;
+                infosDisplay.setScore(this.score);
             }
             else if(list_travellers.get(i).canBeDestroyed){
                 list_travellers.remove(list_travellers.get(i));
@@ -216,6 +233,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         }
         for (int i = 0; i < list_asteroids.size(); i++) {
             list_asteroids.get(i).update();
+            if (list_asteroids.get(i).hasArrived){
+                trajectoryIndex = list_trajectories.indexOf(list_asteroids.get(i).getTargetTrajectory());
+                currentStartPlanet = list_trajectories.get(trajectoryIndex).getStartPlanet();
+                removeTrajectory();
+                list_asteroids.remove(list_asteroids.get(i));
+            }
         }
         
         infosDisplay.setNb_trajectories(remainingTrajCounter);
@@ -263,6 +286,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     currentStopPlanet = t_planet; // la planète d'arrivée est la planète actuelle
                     // On set la fin du segment à l'emplacement du doigt
                     list_trajectories.get(trajectoryIndex).setEndPosition(currentStopPlanet.getPositionX(), currentStopPlanet.getPositionY());
+
                     break; // On a trouve la planète donc on quitte la boucle
                 }
                 else{ // Si l'utilisateur ne passe pas au dessus d'une planète
@@ -292,6 +316,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 list_to_push.add(currentStartPlanet.id);
                 list_to_push.add(currentStopPlanet.id);
                 list_connections.set(trajectoryIndex, list_to_push);
+                list_traj_drawn.add(trajectoryIndex);
                 System.out.println(list_connections);
 
                 // As soon as path added, calculate traveller's path from this planet
@@ -315,21 +340,24 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
             }
             else { // Si on relâche dans la vide
-                list_trajectories.get(trajectoryIndex).reset();//on efface la ligne
-                currentStartPlanet.unsetLinkedPlanet();// On retire la planète linked
-                currentStartPlanet.unsetMyTrajectory();// on retire la trajectoire linked
-                ArrayList<Integer> list_to_push = new ArrayList<>();
-                list_to_push.add(0);
-                list_to_push.add(0);
-                list_connections.set(trajectoryIndex, list_to_push);
-                System.out.println(list_connections);
-
-
+                removeTrajectory();
             }
             //on reset toutes les variables
             resetVariables();
         }
 
+    }
+
+    public void removeTrajectory(){
+        list_trajectories.get(trajectoryIndex).reset();//on efface la ligne
+        currentStartPlanet.unsetLinkedPlanet();// On retire la planète linked
+        currentStartPlanet.unsetMyTrajectory();// on retire la trajectoire linked
+        ArrayList<Integer> list_to_push = new ArrayList<>();
+        list_to_push.add(0);
+        list_to_push.add(0);
+        list_connections.set(trajectoryIndex, list_to_push);
+        list_traj_drawn.remove((Integer) trajectoryIndex);
+        System.out.println(list_connections);
     }
 
     public void generatePlanets(int numberOfPlanets, double facteurDeDistance){
@@ -383,9 +411,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 t_list.add(0);
                 t_list.add(0);
                 list_connections.add(t_list);
-                //Asteroid asteroid = new Asteroid(context, 150, 150, list_trajectories.get(0), 1, animator);
-                SpriteSheet spriteSheet_planet = new SpriteSheet(getContext(), index, spriteList);
-                Animator animator = new Animator(spriteSheet_planet.getPlanetSpriteArray());
+
+                SpriteSheet spriteSheet_planet = new SpriteSheet(getContext());
+                Animator animator = new Animator(spriteSheet_planet.getPlanetSpriteArray(index, spriteList));
                 Planet planet = new Planet(getContext(), id, coordX_rand, coordY_rand, radius_rand, randomAndroidColor, "", t_trajectory, list_travellers, animator);
                 list_planets.add(planet);
                 androidColors = removeTheElement(androidColors, index);

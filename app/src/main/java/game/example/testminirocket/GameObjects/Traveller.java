@@ -30,7 +30,6 @@ public class Traveller extends GameObject{
 
     private Planet current_planet; // Planète actuelle
     private Planet next_target_planet; // Planète où l'on veut aller
-    private Planet first_planet;
     private Planet final_target_planet; // Planète où l'on veut aller
 
     private double max_time; // temps de vie maximum

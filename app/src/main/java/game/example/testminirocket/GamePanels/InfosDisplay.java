@@ -13,6 +13,7 @@ public class InfosDisplay extends GameObject {
 
     private int nb_trajectories;
     private int amelioration_traj;
+    private int score;
 
 
     public InfosDisplay(Context context, double coordX, double coordY) {
@@ -20,6 +21,7 @@ public class InfosDisplay extends GameObject {
         this.coordX = coordX;
         this.coordY = coordY;
         this.nb_trajectories = 0;
+        this.score = 0;
         this.amelioration_traj = 0;
 
         this.paint = new Paint();
@@ -31,12 +33,18 @@ public class InfosDisplay extends GameObject {
     public void setNb_trajectories(int nb_trajectories){
         this.nb_trajectories = nb_trajectories;
     }
+    public void setScore(int score){
+        this.score = score;
+    }
+
 
     public void draw(Canvas canvas){
 
 
-        canvas.drawText("Trajectoires : " + this.nb_trajectories, (float)this.coordX, (float)this.coordY, this.paint);
-        canvas.drawText("Ameliorations Traj: " + this.amelioration_traj, (float)this.coordX, (float)this.coordY + 50, this.paint);
+        canvas.drawText("Score : " + this.score, (float)this.coordX, (float)this.coordY, this.paint);
+        canvas.drawText("Trajectoires : " + this.nb_trajectories, (float)this.coordX, (float)this.coordY + 50, this.paint);
+        canvas.drawText("Ameliorations Traj: " + this.amelioration_traj, (float)this.coordX, (float)this.coordY + 100, this.paint);
+
 
     }
 

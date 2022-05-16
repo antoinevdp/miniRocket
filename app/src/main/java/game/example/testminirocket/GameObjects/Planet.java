@@ -80,7 +80,7 @@ public class Planet extends GameObject{
         this.my_trajectory.draw(canvas);
 
         this.paint.setStrokeWidth(currentStrokeWidth);
-        animator.draw(canvas, this);
+        animator.drawPlanet(canvas, this);
     }
 
     // Pour set la trajectoire de sortie de cette planète

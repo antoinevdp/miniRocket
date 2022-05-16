@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-public class Trajectory {
+public class Trajectory extends GameObject{
     private int id; // Id unique de la trajectoire
     private double startPosX; // Position de départ X
     private double startPosY; // Position de départ y
@@ -17,6 +17,7 @@ public class Trajectory {
 
     // Constructeur
     public Trajectory(int id, double startPosX, double startPosY, double endPosX, double endPosY, Planet startPlanet, Planet endPlanet) {
+        super(startPosX, startPosY);
         this.id = id;
         this.startPosX = startPosX;
         this.startPosY = startPosY;
@@ -72,6 +73,8 @@ public class Trajectory {
     }
 
     public void setEndPlanet(Planet endPlanet) {
+        this.coordX = getPosMidX();
+        this.coordY = getPosMidY();
         this.endPlanet = endPlanet;
     }
 
@@ -81,5 +84,12 @@ public class Trajectory {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public double getPosMidX(){
+        return Math.min(startPosX, endPosX) + (Math.max(startPosX, endPosX) - Math.min(startPosX, endPosX)) / 2;
+    }
+    public double getPosMidY(){
+        return Math.min(startPosY, endPosY) + (Math.max(startPosY, endPosY) - Math.min(startPosY, endPosY)) / 2;
     }
 }
