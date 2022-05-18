@@ -51,11 +51,10 @@ public class SpaceShip extends GameObject{
     private int counterOfArrTraj = 1;
     private int maxTravellerInSpaceShip;
 
-
-    private final Paint paint;
     public boolean hasBoucled;
     private boolean hasReachedFirstPlanet;
-    private boolean goUp;
+    private boolean followTraj;
+    private boolean followArr;
 
     public SpaceShip(double coordX, double coordY, Planet current_planet, int familly, Animator animator) {
         super(coordX, coordY);
@@ -71,23 +70,22 @@ public class SpaceShip extends GameObject{
         this.hasReachedFirstPlanet = false;
         this.next_target_planet = this.current_planet.my_trajectory.getEndPlanet();
         this.current_trajectory = this.current_planet.my_trajectory;
-        this.goUp = true;
+
+        this.followTraj = true;
+        this.followArr = false;
+
         this.familly = familly;
         this.canAnimate = true;
         this.maxTravellerInSpaceShip = 4;
 
         this.spaceShipState = new SpaceShipState(this);
         this.animator = animator;
+        Log.d("spaceship familly =============================", String.valueOf(this.familly));
 
-
-        this.paint = new Paint();
-        if (this.familly == 1) paint.setColor(Color.GREEN);
-        else paint.setColor(Color.RED);
         // Planète où l'on veut aller
     }
 
     public void update(){
-
         if (this.canGo){ // Si il peut voyager
             double distanceToNextPlanetX = this.next_target_planet.getPositionX() - this.coordX; // On calcule la distance x entre sa position et la planète
             double distanceToNextPlanetY = this.next_target_planet.getPositionY() - this.coordY; // On calcule la distance y entre sa position et la planète
@@ -114,22 +112,57 @@ public class SpaceShip extends GameObject{
                 this.velocityY = 0;
                 this.current_planet = this.next_target_planet;
                 this.current_trajectory = this.current_planet.my_trajectory;
-                hasReachedFirstPlanet = this.current_planet.getListOfArrPlanets().size() == 0;
+                // Prendre ceux qui sont sur la planète
                 for (int i = 0; i < current_planet.getList_travellers().size(); i++) {
                     Traveller traveller = current_planet.getList_travellers().get(i);
 
-                    if (this.list_planet.contains(traveller.getFinal_Target_planet()) && traveller.getFinal_Target_planet() == this.current_planet && this.list_travellers_in_spaceship.contains(traveller)){
-                        current_planet.getList_travellers().get(i).hasArrived = true;
-                        this.list_travellers_in_spaceship.remove(traveller);
+                    if (this.list_planet.contains(traveller.getFinal_Target_planet()) && this.current_planet == traveller.getInitial_planet()){
+                        this.list_travellers_in_spaceship.add(current_planet.getList_travellers().get(i));
+                        this.current_planet.removeTraveller(traveller);
+                    }
+
+                    /*if (this.list_planet.contains(traveller.getFinal_Target_planet()) && this.list_travellers_in_spaceship.contains(traveller)){
+                        if (traveller.getFinal_Target_planet() == this.current_planet){
+                            current_planet.getList_travellers().get(i).hasArrived = true;
+                            this.list_travellers_in_spaceship.remove(traveller);
+                        }
                     }
                     if (this.list_travellers_in_spaceship.size() <= this.maxTravellerInSpaceShip){
                         if (this.list_planet.contains(current_planet.getList_travellers().get(i).getFinal_Target_planet()) && current_planet.getList_travellers().get(i).getInitial_planet() == this.current_planet){
                             Log.d("un traveller est rentre", String.valueOf(this.list_travellers_in_spaceship.size()));
                             this.list_travellers_in_spaceship.add(current_planet.getList_travellers().get(i));
                         }
+                    }*/
+                }
+
+                for (int i = 0; i < list_travellers_in_spaceship.size(); i++) {
+                    Traveller traveller = list_travellers_in_spaceship.get(i);
+                    if (this.current_planet == traveller.getFinal_Target_planet()){
+                        traveller.hasArrived = true;
+                        this.list_travellers_in_spaceship.remove(traveller);
                     }
                 }
-                if (this.current_planet.my_trajectory.getFamilly() == this.familly){
+
+                if (this.current_planet.isEndingPlanetTraj()){
+                    this.followTraj = true;
+                    this.followArr = false;
+                }else if (this.current_planet.isEndingPlanetArr() || this.current_planet.my_trajectory.getFamilly() != this.familly){
+                    this.followTraj = false;
+                    this.followArr = true;
+                }
+
+                if (followTraj){
+                    this.next_target_planet = this.current_planet.linkedPlanet;
+
+                }else if (followArr){
+                    if (this.current_planet.my_trajectory.getFamilly() != this.familly){
+                        this.next_target_planet = this.current_planet.getListOfArrPlanets().get(1);
+                    }else {
+                        this.next_target_planet = this.current_planet.getListOfArrPlanets().get(0);
+                    }
+                }
+
+                /*if (this.current_planet.my_trajectory.getFamilly() == this.familly){
                     if (this.current_planet.isLinkedWithPlanet() && goUp){
                         this.next_target_planet = this.current_planet.linkedPlanet;
                     }else {
@@ -146,7 +179,7 @@ public class SpaceShip extends GameObject{
                     goUp = false;
                     counterOfArrTraj++;
                     if (counterOfArrTraj >= this.current_planet.getListOfArrPlanets().size()) counterOfArrTraj = 1;
-                }
+                }*/
 
 
 

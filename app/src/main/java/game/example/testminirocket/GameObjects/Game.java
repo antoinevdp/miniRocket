@@ -80,7 +80,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             R.drawable.n2098505015
     };
 
-    private int total_number_planets = 0;
+    private int total_number_planets;
+    private double facteur_de_puissance;
 
 
     private int trajectoryIndex; // index dans la liste des trajectoires de la trajectoire actuelle
@@ -99,7 +100,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         gameOver = new GameOver(context);
 
         //initialisationd es planètes et ajout dans la liste des planètes
-        generatePlanets(numberOfPlanets, facteurDeDistance);
+
 
         this.colorSelect = new ColorSelect(2100, 500, 1,40, Color.GREEN);
         this.colorSelect.IsSelected(true);
@@ -108,6 +109,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         list_colors.add(this.colorSelect);
         this.colorSelect = new ColorSelect(2100, 800, 3,40, Color.BLUE);
         list_colors.add(this.colorSelect);
+
+        this.total_number_planets = numberOfPlanets;
+        this.facteur_de_puissance = facteurDeDistance;
+        generatePlanets(2, facteurDeDistance);
 
         // initialisation des trajectoires et ajout dans la liste des trajectoires
         this.remainingTrajCounter = list_trajectories.size();
@@ -211,7 +216,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         /*if (isGameOver){
             return;
         }*/
-        if (this.score >= 200) current_familly_color = 2;
+        if (this.score >= 200) {
+            current_familly_color = 2;
+            spaceshipHasSpawn = false;
+        }
+        if (Planet.readyToSpawn() && list_planets.size() < total_number_planets){
+            generatePlanets(1, facteur_de_puissance);
+        }
 
         //Spawn Traveller if its time to Spawn
         if (Traveller.readyToSpawn()){
@@ -222,7 +233,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 target_planet_random = rand.nextInt(list_planets.size());
             }
 
-            Traveller traveller_test = new Traveller(getContext(), 0,0, 30, list_planets.get(spawn_planet_random), list_planets.get(target_planet_random), list_planets);
+            Traveller traveller_test = new Traveller(getContext(), 0,0, 60, list_planets.get(spawn_planet_random), list_planets.get(target_planet_random), list_planets);
             list_travellers.add(traveller_test);
 
             list_planets.get(target_planet_random).addTraveller(traveller_test);
@@ -369,7 +380,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             if(canLeaveLine){
 
                 if (currentStopPlanet.isLinkedWithPlanet() && currentStopPlanet.getListOfArrPlanets().size() != 0 && (currentStopPlanet.my_trajectory.getFamilly() == current_familly_color)){
-                    currentStartPlanet.my_trajectory.setFamilly(2);
+                    currentStartPlanet.my_trajectory.setFamilly(current_familly_color);
                     spaceshipHasSpawn = false;
                 }
                 // On set la fin du segment à l'emplacement de la deuxieme planète
@@ -445,9 +456,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         int maxRadius = 100;
         // Protection si des planètes n'arrive pas à spawn
         int protection = 0;
+        int nb_planet = list_planets.size();
 
         // Tant que toute les planètes n'ont pas spawn
-        while (list_planets.size() < numberOfPlanets) {
+        while (list_planets.size() < nb_planet + numberOfPlanets) {
             protection++; // incrementation de la protection
 
             // Coord et rayon aleatoires de spawn
