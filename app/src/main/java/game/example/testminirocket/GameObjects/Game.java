@@ -18,10 +18,10 @@ import com.minirocket.game.R;
 import java.util.ArrayList;
 import java.util.Random;
 
-import game.example.testminirocket.BFS;
 import game.example.testminirocket.GamePanels.GameOver;
 import game.example.testminirocket.GamePanels.InfosDisplay;
 import game.example.testminirocket.graphics.Animator;
+import game.example.testminirocket.graphics.ColorSelect;
 import game.example.testminirocket.graphics.SpriteSheet;
 
 
@@ -48,18 +48,18 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private Planet currentStartPlanet; // Planète où commence la ligne
     private Planet currentStopPlanet; // Planète où finie la ligne
 
-    public ArrayList<Planet> list_planets = new ArrayList<Planet>(); // liste des planète du niveau
-    public ArrayList<Trajectory> list_trajectories = new ArrayList<Trajectory>(); // liste des Trajets entre planètes
-    public ArrayList<Traveller> list_travellers = new ArrayList<Traveller>(); // liste des Trajets entre planètes
-    public ArrayList<Asteroid> list_asteroids = new ArrayList<Asteroid>(); // liste des Trajets entre planètes
-    public ArrayList<SpaceShip> list_spaceShips = new ArrayList<>(); // liste des Trajets entre planètes
-    public ArrayList<ColorSelect> list_colors = new ArrayList<>(); //liste des couleurs selectionables
+    private ArrayList<Planet> list_planets = new ArrayList<Planet>(); // liste des planète du niveau
+    private ArrayList<Trajectory> list_trajectories = new ArrayList<Trajectory>(); // liste des Trajets entre planètes
+    private ArrayList<Traveller> list_travellers = new ArrayList<Traveller>(); // liste des Trajets entre planètes
+    private ArrayList<Asteroid> list_asteroids = new ArrayList<Asteroid>(); // liste des Trajets entre planètes
+    private ArrayList<SpaceShip> list_spaceShips = new ArrayList<>(); // liste des Trajets entre planètes
+    private ArrayList<ColorSelect> list_colors = new ArrayList<>(); //liste des couleurs selectionables
 
-    private ColorSelect test;
+    private ColorSelect colorSelect;
 
 
-    public ArrayList<ArrayList<Integer>> list_connections = new ArrayList<>();
-    public ArrayList<Integer> list_traj_drawn = new ArrayList<>();
+    private ArrayList<ArrayList<Integer>> list_connections = new ArrayList<>();
+    private ArrayList<Integer> list_traj_drawn = new ArrayList<>();
 
     private InfosDisplay infosDisplay;
     private GameOver gameOver;
@@ -100,8 +100,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         //initialisationd es planètes et ajout dans la liste des planètes
         generatePlanets(numberOfPlanets, facteurDeDistance);
 
-        test = new ColorSelect(2000, 200, 1,20, Color.RED);
-        list_colors.add(test);
+        this.colorSelect = new ColorSelect(200, 200, 1,20, Color.RED);
+        list_colors.add(this.colorSelect);
 
         // initialisation des trajectoires et ajout dans la liste des trajectoires
         this.remainingTrajCounter = list_trajectories.size();
@@ -184,7 +184,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             }
         }*/
 
-        test.draw(canvas);
+        colorSelect.draw(canvas);
 
 
         infosDisplay.draw(canvas);
@@ -204,6 +204,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         /*if (isGameOver){
             return;
         }*/
+        if (this.score >= 200) current_familly_color = 2;
 
         //Spawn Traveller if its time to Spawn
         if (Traveller.readyToSpawn()){

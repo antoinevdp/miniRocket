@@ -48,7 +48,8 @@ public class SpaceShip extends GameObject{
     private Animator animator;
 
     private int familly;
-    public int counterOfArrTraj = 1;
+    private int counterOfArrTraj = 1;
+    private int maxTravellerInSpaceShip;
 
 
     private final Paint paint;
@@ -73,6 +74,7 @@ public class SpaceShip extends GameObject{
         this.goUp = true;
         this.familly = familly;
         this.canAnimate = true;
+        this.maxTravellerInSpaceShip = 4;
 
         this.spaceShipState = new SpaceShipState(this);
         this.animator = animator;
@@ -115,12 +117,16 @@ public class SpaceShip extends GameObject{
                 hasReachedFirstPlanet = this.current_planet.getListOfArrPlanets().size() == 0;
                 for (int i = 0; i < current_planet.getList_travellers().size(); i++) {
                     Traveller traveller = current_planet.getList_travellers().get(i);
+
                     if (this.list_planet.contains(traveller.getFinal_Target_planet()) && traveller.getFinal_Target_planet() == this.current_planet && this.list_travellers_in_spaceship.contains(traveller)){
                         current_planet.getList_travellers().get(i).hasArrived = true;
+                        this.list_travellers_in_spaceship.remove(traveller);
                     }
-                    if (this.list_planet.contains(current_planet.getList_travellers().get(i).getFinal_Target_planet()) && current_planet.getList_travellers().get(i).getInitial_planet() == this.current_planet){
-                        Log.d("un traveller est rentre", "");
-                        this.list_travellers_in_spaceship.add(current_planet.getList_travellers().get(i));
+                    if (this.list_travellers_in_spaceship.size() <= this.maxTravellerInSpaceShip){
+                        if (this.list_planet.contains(current_planet.getList_travellers().get(i).getFinal_Target_planet()) && current_planet.getList_travellers().get(i).getInitial_planet() == this.current_planet){
+                            Log.d("un traveller est rentre", String.valueOf(this.list_travellers_in_spaceship.size()));
+                            this.list_travellers_in_spaceship.add(current_planet.getList_travellers().get(i));
+                        }
                     }
                 }
                 if (this.current_planet.my_trajectory.getFamilly() == this.familly){
