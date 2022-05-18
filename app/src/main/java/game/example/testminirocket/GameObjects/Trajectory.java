@@ -3,6 +3,9 @@ package game.example.testminirocket.GameObjects;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
+
+import java.util.ArrayList;
 
 public class Trajectory extends GameObject{
     private int id; // Id unique de la trajectoire
@@ -12,11 +15,14 @@ public class Trajectory extends GameObject{
     private double endPosY; // Position de fin Y
     private Planet startPlanet; // Planète de départ
     private Planet endPlanet; // Planète de fin
+    private int familly;
     private final Paint paint = new Paint();
+
+    public ArrayList<SpaceShip> list_spaceShips = new ArrayList<>(); // liste des Trajets entre planètes
 
 
     // Constructeur
-    public Trajectory(int id, double startPosX, double startPosY, double endPosX, double endPosY, Planet startPlanet, Planet endPlanet) {
+    public Trajectory(int id, double startPosX, double startPosY, double endPosX, double endPosY, Planet startPlanet, Planet endPlanet, int familly) {
         super(startPosX, startPosY);
         this.id = id;
         this.startPosX = startPosX;
@@ -25,6 +31,8 @@ public class Trajectory extends GameObject{
         this.endPosY = endPosY;
         this.startPlanet = startPlanet;
         this.endPlanet = endPlanet;
+        this.list_spaceShips = null;
+        this.familly = familly;
 
         paint.setColor(Color.GREEN);
     }
@@ -91,5 +99,21 @@ public class Trajectory extends GameObject{
     }
     public double getPosMidY(){
         return Math.min(startPosY, endPosY) + (Math.max(startPosY, endPosY) - Math.min(startPosY, endPosY)) / 2;
+    }
+
+    public void addSpaceShip(SpaceShip spaceShip){
+        this.list_spaceShips.add(spaceShip);
+    }
+
+    public int getFamilly() {
+        return familly;
+    }
+    public void setFamilly(int familly) {
+        Log.d("familly", String.valueOf(familly));
+        this.familly = familly;
+        if (this.familly == 1)
+        paint.setColor(Color.GREEN);
+        else paint.setColor(Color.RED);
+        Log.d("familly", String.valueOf(familly));
     }
 }

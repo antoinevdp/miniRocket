@@ -89,7 +89,7 @@ public class Planet extends GameObject{
     }
     // Pour unset la trajectoire de sortie de cette planète
     public void unsetMyTrajectory(){
-        this.my_trajectory = new Trajectory(-1, 0,0,0,0, null, null);
+        this.my_trajectory = new Trajectory(-1, 0,0,0,0, null, null,1);
     }
     // Pour set la planète associée de cette planète
     public void setLinkedPlanet(Planet linkedPlanet){
@@ -119,4 +119,11 @@ public class Planet extends GameObject{
         return planetState;
     }
 
+    public void addTraveller(Traveller traveller_test) {
+        this.list_travellers.add(traveller_test);
+    }
+
+    public ArrayList<Traveller> getList_travellers(){
+        return this.list_travellers;
+    }
 }

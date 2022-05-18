@@ -1,16 +1,21 @@
 package game.example.testminirocket.graphics;
 
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 
 public class Sprite {
 
     private final SpriteSheet spriteSheet;
     private final Rect rect;
+    private Matrix matrix;
+    private float angle;
 
-    public Sprite(SpriteSheet spriteSheet, Rect rect) {
+    public Sprite(SpriteSheet spriteSheet, Rect rect, float angle) {
         this.spriteSheet = spriteSheet;
         this.rect = rect;
+        matrix = new Matrix();
+        this.angle = angle;
     }
 
     public void draw(Canvas canvas, int x, int y) {

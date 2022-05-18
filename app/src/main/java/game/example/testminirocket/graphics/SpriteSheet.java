@@ -3,6 +3,7 @@ package game.example.testminirocket.graphics;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.util.Log;
 
@@ -36,16 +37,25 @@ public class SpriteSheet {
         }
         Sprite[] spriteArray = new Sprite[50];
         for (int i = 0; i < spriteArray.length; i++) {
-            spriteArray[i] = new Sprite(this, new Rect(i*100, 0, (i+1)*100, 100));
+            spriteArray[i] = new Sprite(this, new Rect(i*100, 0, (i+1)*100, 100), 0);
         }
         return spriteArray;
     }
     public Sprite[] getAsteroidSpriteArray(){
         Sprite[] spriteArray = new Sprite[50];
         for (int i = 0; i < spriteArray.length; i++) {
-            spriteArray[i] = new Sprite(this, new Rect(i*100, 0, (i+1)*100, 100));
+            spriteArray[i] = new Sprite(this, new Rect(i*100, 0, (i+1)*100, 100), 0);
         }
         bitmap = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.asteroid_sprite, bitmapOptions);
+        return spriteArray;
+    }
+    public Sprite[] getRocketSpriteArray(){
+        Sprite[] spriteArray = new Sprite[8];
+        for (int i = 0; i < spriteArray.length; i++) {
+            spriteArray[i] = new Sprite(this, new Rect(i*96, 0, (i+1)*96, 96), 90);
+        }
+        bitmap = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.spaceship_sprite, bitmapOptions);
+
         return spriteArray;
     }
 

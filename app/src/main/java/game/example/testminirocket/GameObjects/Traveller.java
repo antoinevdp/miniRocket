@@ -40,6 +40,8 @@ public class Traveller extends GameObject{
 
     private ArrayList<Planet> listAllPlanets; // Liste de toutes les planètes du niveau
 
+    private SpaceShip current_spaceship;
+
 
     private ArrayList<Integer> path_to_take; // Chemin que doit prendre le traveller pour arriver jusqu'à sa planète cible
     //Constructor
@@ -48,6 +50,7 @@ public class Traveller extends GameObject{
         this.current_planet = current_planet;
         this.next_target_planet = next_target_planet;
         this.final_target_planet = next_target_planet;
+        this.current_spaceship = null;
 
         this.timeBar = new TimeBar(context, this);
 
@@ -58,8 +61,6 @@ public class Traveller extends GameObject{
         this.canGo = false;
         this.canBeDestroyed = false;
         this.hasArrived = false;
-        this.velocityX = 0;
-        this.velocityY = 0;
 
         this.path_to_take = null;
         // Faire spawn le traveller dans le rayon de sa planète aléatoirement
@@ -97,51 +98,6 @@ public class Traveller extends GameObject{
         if (this.time_remaining <= 0){
             this.canBeDestroyed = true;
         }
-        if (this.path_to_take != null){ // Si un chemin a été trouvé
-            if (this.path_to_take.size() == counter){ // Si le traveller est arrivé à destination
-                this.canGo = false; // on n'avance plus
-                this.isTravelling = false;
-                this.hasArrived = true;
-                unsetPathToTake(); // Il n'y a plus de chemin à prendre
-
-            }else { // Si le traveller n'est pas encore arrivé
-                this.hasArrived = false;
-                this.next_target_planet = this.listAllPlanets.get(this.path_to_take.get(counter)); // Sa planète cible est la planète suivante dans la liste des planètes du chemin à prendre
-                if (this.current_planet.linkedPlanet == this.next_target_planet || this.current_planet.getListOfArrPlanets().contains(this.next_target_planet)){
-                    this.canGo = true; // Il peut voyager
-                }else {
-                    this.canGo = false;
-                    this.canBeDestroyed = true;
-                }
-
-            }
-
-        }
-        if (this.canGo){ // Si il peut voyager
-            double distanceToNextPlanetX = this.next_target_planet.getPositionX() - this.coordX; // On calcule la distance x entre sa position et la planète
-            double distanceToNextPlanetY = this.next_target_planet.getPositionY() - this.coordY; // On calcule la distance y entre sa position et la planète
-
-            double distanceToNextPlanet = GameObject.getDistanceBetweenObjects(this, this.next_target_planet); // on calcule la distance entre la planète target et le traveller
-
-            double directionX = distanceToNextPlanetX/distanceToNextPlanet; // on calcule la direction à prendre en x
-            double directionY = distanceToNextPlanetY/distanceToNextPlanet; // on calcule la direction à prendre en y
-
-            if (distanceToNextPlanet > 10){ // Si la distance entre le traveller et la planète cible est > 10
-                // on fait avancer dans la direction
-                this.velocityX = directionX*MAX_SPEED;
-                this.velocityY = directionY*MAX_SPEED;
-                this.coordX += this.velocityX;
-                this.coordY += this.velocityY;
-                this.isTravelling = true;
-
-            }else { // Sinon, on est arrivé à la planète cible
-                this.velocityX = 0;
-                this.velocityY = 0;
-                this.current_planet = this.next_target_planet;
-                //this.next_target_planet = this.listAllPlanets.get(this.path_to_take.get(counter)); // Sa planète cible est la planète suivante dans la liste des planètes du chemin à prendre
-                counter++; // on incrémente le compteur de planète pour le chemin
-            }
-        }
 
     }
 
@@ -149,18 +105,7 @@ public class Traveller extends GameObject{
         this.path_to_take = path;
     }
 
-    public void unsetPathToTake(){
-        this.path_to_take = null;
-    }
-    public ArrayList<Integer> getPathToTake(){
-        return this.path_to_take;
-    }
-
-    public void calculatePath(int nb_connections, ArrayList<ArrayList<Integer>> list_connections){
-        System.out.println(BFS.calculateShortestPath(nb_connections, this.current_planet.id, this.next_target_planet.id, list_connections));
-    }
-
-    public Planet getCurrent_planet() {
+    public Planet getInitial_planet() {
         return current_planet;
     }
 
@@ -185,5 +130,17 @@ public class Traveller extends GameObject{
 
     public void setTime_remaining(double time_remaining) {
         this.time_remaining = time_remaining;
+    }
+
+    public void setCurrent_spaceship(SpaceShip spaceShip){
+        this.current_spaceship = spaceShip;
+    }
+    public SpaceShip getCurrent_spaceship(){
+        return this.current_spaceship;
+    }
+
+    public void moveToCoord(double coordX, double coordY) {
+        this.coordX = coordX;
+        this.coordY = coordY;
     }
 }
