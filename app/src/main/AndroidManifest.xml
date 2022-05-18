@@ -13,13 +13,20 @@
         <activity
             android:name="game.example.testminirocket.secondActivity"
             android:screenOrientation="landscape"
-            android:exported="false" />
+            android:exported="false"
+            tools:ignore="LockedOrientationActivity"/>
         <activity
             android:parentActivityName="game.example.testminirocket.MainActivity"
             android:name="game.example.testminirocket.MainActivityTest"
             android:screenOrientation="landscape"
             tools:ignore="LockedOrientationActivity"
             />
+        <activity
+            android:parentActivityName="game.example.testminirocket.MainActivity"
+            android:name="game.example.testminirocket.settingsActivity"
+            android:screenOrientation="landscape"
+            android:exported="false"
+            tools:ignore="LockedOrientationActivity"/>
         <activity
             android:name="game.example.testminirocket.MainActivity"
             android:screenOrientation="landscape"

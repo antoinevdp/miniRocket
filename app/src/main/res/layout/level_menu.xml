@@ -41,38 +41,39 @@
         android:id="@+id/galaxie1"
         android:layout_width="128dp"
         android:layout_height="128dp"
-        android:layout_marginEnd="190dp"
+        android:layout_marginStart="52dp"
         android:layout_marginBottom="60dp"
         android:background="#00FFFFFF"
         android:scaleType="fitCenter"
         android:src="@mipmap/galaxie"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/starship"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
+
 
     <ImageButton
         android:id="@+id/galaxie4"
         android:layout_width="128dp"
         android:layout_height="128dp"
-        android:layout_marginStart="190dp"
+        android:layout_marginEnd="52dp"
         android:layout_marginBottom="60dp"
         android:background="#00FFFFFF"
         android:scaleType="fitCenter"
         android:src="@mipmap/galaxie"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/starship"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
         android:id="@+id/galaxie3"
         android:layout_width="128dp"
         android:layout_height="128dp"
-        android:layout_marginStart="100dp"
         android:layout_marginTop="60dp"
+        android:layout_marginEnd="142dp"
         android:background="#00FFFFFF"
         android:scaleType="fitCenter"
         android:src="@mipmap/galaxie"
-        app:layout_constraintStart_toEndOf="@+id/starship"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 
@@ -80,13 +81,150 @@
         android:id="@+id/galaxie2"
         android:layout_width="128dp"
         android:layout_height="128dp"
+        android:layout_marginStart="142dp"
         android:layout_marginTop="60dp"
-        android:layout_marginEnd="100dp"
         android:background="#00FFFFFF"
         android:scaleType="fitCenter"
         android:src="@mipmap/galaxie"
-        app:layout_constraintEnd_toStartOf="@+id/starship"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
+
+    <ImageView
+        android:id="@+id/cadenas2"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_marginStart="142dp"
+        android:layout_marginTop="60dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        android:src="@drawable/cadenas"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="128dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:text="Galaxie 1"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/galaxie1" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="128dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="142dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:text="Galaxie 2"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/galaxie2" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="128dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="142dp"
+        android:gravity="center"
+        android:text="Galaxie 3"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/galaxie3" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="128dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="52dp"
+        android:gravity="center"
+        android:text="Galaxie 4"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/galaxie4" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="141dp"
+        android:layout_height="78dp"
+        android:layout_marginBottom="20dp"
+        android:rotation="20"
+        android:src="@drawable/arrow"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/imageView4"
+        app:layout_constraintEnd_toStartOf="@+id/starship"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/galaxie2" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="141dp"
+        android:layout_height="78dp"
+        android:layout_marginBottom="20dp"
+        android:rotation="-20"
+        android:src="@drawable/arrow"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/imageView6"
+        app:layout_constraintEnd_toStartOf="@+id/galaxie3"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/starship" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="197dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="108dp"
+        android:rotation="-16"
+        android:src="@drawable/arrow"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/starship"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/galaxie1" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="197dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="108dp"
+        android:rotation="16"
+        android:src="@drawable/arrow"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/galaxie4"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/starship" />
+
+    <ImageButton
+        android:id="@+id/cercle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        android:src="@drawable/ic_ellipse_2_red"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/starship"
+        app:layout_constraintVertical_bias="0.58000004" />
+
+    <ImageView
+        android:id="@+id/rocketbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_round_rocket_red"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/starship" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

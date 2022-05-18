@@ -10,15 +10,27 @@
         <entry key="..\:/Lucas/Coding/Android/Projects/minirocket/app/src/main/res/drawable/shadow.xml" value="0.2985" />
         <entry key="..\:/Lucas/Coding/Android/Projects/minirocket/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/antoi/AndroidStudioProjects/minirocket/app/src/main/res/drawable/arrow.xml" value="0.3455" />
+        <entry key="..\:/Users/antoi/AndroidStudioProjects/minirocket/app/src/main/res/drawable/ic_baseline_vibration.xml" value="0.3455" />
+        <entry key="..\:/Users/antoi/AndroidStudioProjects/minirocket/app/src/main/res/drawable/ic_carbon_light_filled.xml" value="0.3455" />
+        <entry key="..\:/Users/antoi/AndroidStudioProjects/minirocket/app/src/main/res/drawable/ic_clarity_music_note_solid.xml" value="0.3455" />
+        <entry key="..\:/Users/antoi/AndroidStudioProjects/minirocket/app/src/main/res/drawable/ic_ellipse_2.xml" value="0.3455" />
+        <entry key="..\:/Users/antoi/AndroidStudioProjects/minirocket/app/src/main/res/drawable/ic_ellipse_2_green.xml" value="0.3455" />
+        <entry key="..\:/Users/antoi/AndroidStudioProjects/minirocket/app/src/main/res/drawable/ic_false.xml" value="0.3455" />
+        <entry key="..\:/Users/antoi/AndroidStudioProjects/minirocket/app/src/main/res/drawable/ic_resource_false.xml" value="0.3455" />
+        <entry key="..\:/Users/antoi/AndroidStudioProjects/minirocket/app/src/main/res/drawable/ic_resource_true.xml" value="0.3455" />
+        <entry key="..\:/Users/antoi/AndroidStudioProjects/minirocket/app/src/main/res/drawable/ic_round_rocket.xml" value="0.3455" />
+        <entry key="..\:/Users/antoi/AndroidStudioProjects/minirocket/app/src/main/res/drawable/ic_round_rocket_green.xml" value="0.3455" />
+        <entry key="..\:/Users/antoi/AndroidStudioProjects/minirocket/app/src/main/res/drawable/ic_round_rocket_red.xml" value="0.3455" />
         <entry key="..\:/Users/antoi/AndroidStudioProjects/minirocket/app/src/main/res/layout/activity_main.xml" value="0.2821718683197948" />
         <entry key="..\:/Users/antoi/AndroidStudioProjects/minirocket/app/src/main/res/layout/activity_second.xml" value="0.2821718683197948" />
-        <entry key="..\:/Users/antoi/AndroidStudioProjects/minirocket/app/src/main/res/layout/level_menu.xml" value="0.25" />
+        <entry key="..\:/Users/antoi/AndroidStudioProjects/minirocket/app/src/main/res/layout/activity_settings.xml" value="0.5" />
+        <entry key="..\:/Users/antoi/AndroidStudioProjects/minirocket/app/src/main/res/layout/level_menu.xml" value="0.22" />
         <entry key="..\:/Users/antoi/AndroidStudioProjects/testminirocket/app/src/main/res/layout/activity_main.xml" value="0.32916666666666666" />
         <entry key="..\:/Users/antoi/AndroidStudioProjects/testminirocket/app/src/main/res/layout/activity_second.xml" value="0.34375" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
