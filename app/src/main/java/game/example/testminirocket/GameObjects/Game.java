@@ -3,6 +3,7 @@ package game.example.testminirocket.GameObjects;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -52,6 +53,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     public ArrayList<Traveller> list_travellers = new ArrayList<Traveller>(); // liste des Trajets entre planètes
     public ArrayList<Asteroid> list_asteroids = new ArrayList<Asteroid>(); // liste des Trajets entre planètes
     public ArrayList<SpaceShip> list_spaceShips = new ArrayList<>(); // liste des Trajets entre planètes
+    public ArrayList<ColorSelect> list_colors = new ArrayList<>(); //liste des couleurs selectionables
+
+    private ColorSelect test;
 
 
     public ArrayList<ArrayList<Integer>> list_connections = new ArrayList<>();
@@ -95,6 +99,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         //initialisationd es planètes et ajout dans la liste des planètes
         generatePlanets(numberOfPlanets, facteurDeDistance);
+
+        test = new ColorSelect(2000, 200, 1,20, Color.RED);
+        list_colors.add(test);
 
         // initialisation des trajectoires et ajout dans la liste des trajectoires
         this.remainingTrajCounter = list_trajectories.size();
@@ -171,6 +178,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 list_asteroids.get(i).draw(canvas);
             }
         }
+        /*if (list_colors.size()>0){
+            for (int i = 0; i < list_colors.size(); i++) {
+                list_colors.get(i).draw(canvas);
+            }
+        }*/
+
+        test.draw(canvas);
+
 
         infosDisplay.draw(canvas);
 
