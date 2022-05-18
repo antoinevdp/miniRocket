@@ -7,9 +7,17 @@ import android.graphics.Paint;
 import java.util.ArrayList;
 
 import game.example.testminirocket.graphics.Animator;
+import game.example.testminirocket.graphics.ColorSelect;
 import game.example.testminirocket.graphics.Sprite;
 
 public class Planet extends GameObject{
+    private static final double SPEED_PIXELS_PER_SECOND = 100;
+    private static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
+    private static final double SPAWN_PER_MINUTE = 20;
+    private static final double SPAWN_PER_SECOND = SPAWN_PER_MINUTE / 60.0;
+    private static final double UPDATE_PER_SPAWN = GameLoop.MAX_UPS / SPAWN_PER_SECOND;
+    private static double updateUntilNextSpawn = UPDATE_PER_SPAWN;
+
     public int id; // id unique de la planète
     public double radius; // Rayon de la planète
     private Context context;
@@ -55,6 +63,16 @@ public class Planet extends GameObject{
         this.paint.setColor(this.randomAndroidColor);
 
     }
+    // Check if readyToSpawn
+    public static boolean readyToSpawn() {
+        if(updateUntilNextSpawn <= 0){
+            updateUntilNextSpawn += UPDATE_PER_SPAWN;
+            return true;
+        }else {
+            updateUntilNextSpawn --;
+            return false;
+        }
+    }
 
     // Affichage
     public void draw(Canvas canvas) {
@@ -89,7 +107,7 @@ public class Planet extends GameObject{
     }
     // Pour unset la trajectoire de sortie de cette planète
     public void unsetMyTrajectory(){
-        this.my_trajectory = new Trajectory(-1, 0,0,0,0, null, null,1);
+        this.my_trajectory = new Trajectory(-1, 0,0,0,0, null, null, 0);
     }
     // Pour set la planète associée de cette planète
     public void setLinkedPlanet(Planet linkedPlanet){
@@ -122,8 +140,17 @@ public class Planet extends GameObject{
     public void addTraveller(Traveller traveller_test) {
         this.list_travellers.add(traveller_test);
     }
+    public void removeTraveller(Traveller traveller_test) {
+        this.list_travellers.remove(traveller_test);
+    }
 
     public ArrayList<Traveller> getList_travellers(){
         return this.list_travellers;
+    }
+    public boolean isEndingPlanetTraj(){
+        return this.isLinkedWithPlanet() && this.getListOfArrPlanets().size() == 0;
+    }
+    public boolean isEndingPlanetArr(){
+        return this.getListOfArrPlanets().size() != 0 && !this.isLinkedWithPlanet();
     }
 }
