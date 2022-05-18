@@ -100,7 +100,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         //initialisationd es planètes et ajout dans la liste des planètes
         generatePlanets(numberOfPlanets, facteurDeDistance);
 
-        this.colorSelect = new ColorSelect(200, 200, 1,20, Color.RED);
+        this.colorSelect = new ColorSelect(2100, 500, 1,40, Color.RED);
+        list_colors.add(this.colorSelect);
+        this.colorSelect = new ColorSelect(2100, 650, 2,40, Color.GREEN);
         list_colors.add(this.colorSelect);
 
         // initialisation des trajectoires et ajout dans la liste des trajectoires
@@ -178,13 +180,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 list_asteroids.get(i).draw(canvas);
             }
         }
-        /*if (list_colors.size()>0){
+        if (list_colors.size()>0){
             for (int i = 0; i < list_colors.size(); i++) {
                 list_colors.get(i).draw(canvas);
             }
-        }*/
+        }
 
-        colorSelect.draw(canvas);
 
 
         infosDisplay.draw(canvas);

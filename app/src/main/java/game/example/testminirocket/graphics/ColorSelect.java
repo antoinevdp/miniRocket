@@ -20,7 +20,7 @@ public class ColorSelect extends GameObject {
         this.radius = radius;
 
         this.paint = new Paint();
-        this.paint.setColor(Color.GREEN);
+        this.paint.setColor(randomAndroidColor);
     }
 
     // Affichage
