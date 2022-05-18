@@ -21,6 +21,10 @@ import android.widget.Toast;
 
 import com.minirocket.game.R;
 
+/*
+* cette activité permet de choisir parmis les différents niveaux
+*/
+
 public class secondActivity extends Activity {
 
     Animation rotateAnimation;
@@ -31,6 +35,7 @@ public class secondActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.level_menu);
 
+        //cela permet de mettre l'activité en plein écran
         Window window = getWindow();
         window.setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -39,9 +44,9 @@ public class secondActivity extends Activity {
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
-        //button retour
-        ImageButton button = (ImageButton) findViewById(R.id.returnButton);
 
+        ImageButton button = (ImageButton) findViewById(R.id.returnButton);
+        //en cliauant sur ce button on retourne à l'activité précedente
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,7 +54,7 @@ public class secondActivity extends Activity {
             }
         });
 
-        ImageButton galaxie1 = (ImageButton) findViewById(R.id.galaxie1);
+        ImageButton galaxie1 = (ImageButton) findViewById(R.id.galaxie1);//chaque image de galaxie est un button
         ImageButton galaxie2 = (ImageButton) findViewById(R.id.galaxie2);
         ImageButton galaxie3 = (ImageButton) findViewById(R.id.galaxie3);
         ImageButton galaxie4 = (ImageButton) findViewById(R.id.galaxie4);
@@ -63,13 +68,12 @@ public class secondActivity extends Activity {
         ImageButton cerclebutton = (ImageButton) findViewById(R.id.cercle);
 
 
-        rotateAnimation(galaxie1,7000) ;
+        rotateAnimation(galaxie1,7000) ;//on fait tourner les galaxies à différentes vitesses
         rotateAnimation(galaxie2,5000) ;
         rotateAnimation(galaxie3,4000) ;
         rotateAnimation(galaxie4,6000) ;
 
-        //line between planet and rocket
-
+        //creation de lignes entre le vaisseau et une galaxie pour selectionner un niveau
         galaxie1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,13 +123,14 @@ public class secondActivity extends Activity {
             }
         });
 
+        //une fois le niveau selectionné le button de lancement de niveau passe au vert
         cerclebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(view.getContext(), GameActivity.class);
                 Bundle parameter = new Bundle();
-                switch (selectLvl){
-                    case  0:
+                switch (selectLvl){ //pour chaque cas on lance l'activité GameActivité avec le nombre de planetes et le factuer de distance qui change pour augmenter la difficulté
+                    case  0: //aucun niveau a été selectionné
                         Toast.makeText(secondActivity.this, "Choose a level", Toast.LENGTH_SHORT).show();
                         break;
                     case  1:
@@ -157,7 +162,7 @@ public class secondActivity extends Activity {
         });
     }
 
-
+    //cette fonction permet aux galaxies de tourner sur elles même
     private void rotateAnimation(ImageButton imageButton, long duration){
         rotateAnimation= AnimationUtils.loadAnimation(this,R.anim.rotate);
         rotateAnimation.setInterpolator(new LinearInterpolator());
@@ -165,7 +170,7 @@ public class secondActivity extends Activity {
         imageButton.startAnimation(rotateAnimation);
     }
 
-    //no transition between activity
+    //cela permet d'enlever les transitions entre les activités
     @Override
     public void onPause() {
         super.onPause();

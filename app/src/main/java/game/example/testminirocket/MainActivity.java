@@ -15,7 +15,7 @@ import android.widget.Button;
 import com.minirocket.game.R;
 
 /*
-This activity is the launch activity og the App
+This activity is the launch activity of the App
  */
 
 public class MainActivity extends Activity {
@@ -27,16 +27,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);*/
-
+        //cela permet de mettre l'activité en plein écran
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-
 
         Window window = getWindow();
         window.setFlags(
@@ -67,7 +59,7 @@ public class MainActivity extends Activity {
         });
     }
 
-    //no transition between activity
+    //cela permet d'enlever les transitions entre les activités
     @Override
     public void onPause() {
         super.onPause();

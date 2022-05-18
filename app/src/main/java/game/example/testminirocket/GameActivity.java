@@ -9,9 +9,7 @@ import android.view.WindowManager;
 
 import game.example.testminirocket.GameObjects.Game;
 
-/**
- * MainActivity is the entry point to our application.
- */
+
 public class GameActivity extends Activity {
 
     private Game game;
@@ -20,6 +18,7 @@ public class GameActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("GameActivity.java", "onCreate()");
 
+        //cela permet de mettre l'activité en plein écran
         Window window = getWindow();
         window.setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,

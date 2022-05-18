@@ -21,7 +21,7 @@ public class Planet extends GameObject{
     private PlanetState planetState;
 
     private ArrayList<Traveller> list_travellers = new ArrayList<Traveller>(); // Liste des voyageurs sur la planète
-    private ArrayList<Planet> list_of_arr_planets = new ArrayList<Planet>(); // Liste des voyageurs sur la planète
+    private ArrayList<Planet> list_of_arr_planets = new ArrayList<Planet>(); // Liste des planetes sur la planète
 
 
     public Trajectory my_trajectory; // La trajectoire associée à cette planète

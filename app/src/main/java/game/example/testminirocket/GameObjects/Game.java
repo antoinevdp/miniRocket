@@ -101,10 +101,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         //initialisationd es planètes et ajout dans la liste des planètes
         generatePlanets(numberOfPlanets, facteurDeDistance);
 
-        this.colorSelect = new ColorSelect(2100, 500, 1,40, Color.RED);
+        this.colorSelect = new ColorSelect(2100, 500, 1,40, Color.GREEN);
         this.colorSelect.IsSelected(true);
         list_colors.add(this.colorSelect);
-        this.colorSelect = new ColorSelect(2100, 650, 2,40, Color.GREEN);
+        this.colorSelect = new ColorSelect(2100, 650, 2,40, Color.RED);
         list_colors.add(this.colorSelect);
         this.colorSelect = new ColorSelect(2100, 800, 3,40, Color.BLUE);
         list_colors.add(this.colorSelect);

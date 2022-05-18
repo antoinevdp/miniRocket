@@ -35,6 +35,7 @@ public class Trajectory extends GameObject{
         this.familly = familly;
 
         paint.setColor(Color.GREEN);
+        paint.setStrokeWidth(10);
     }
     // Affichage
     public void draw(Canvas canvas) {

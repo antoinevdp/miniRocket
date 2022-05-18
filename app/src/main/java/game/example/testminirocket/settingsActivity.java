@@ -11,6 +11,10 @@ import android.widget.Toast;
 
 import com.minirocket.game.R;
 
+/*
+ * cette activité permet de configurer différentes options
+ */
+
 public class settingsActivity extends Activity {
 
     @Override
@@ -18,6 +22,7 @@ public class settingsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        //cela permet de mettre l'activité en plein écran
         Window window = getWindow();
         window.setFlags(
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -26,10 +31,12 @@ public class settingsActivity extends Activity {
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
-        ImageButton button = (ImageButton) findViewById(R.id.returnButton);
+        ImageButton button = (ImageButton) findViewById(R.id.returnButton); //on initialise les buttons
         ImageButton trueFasle = (ImageButton) findViewById(R.id.trueFalse);
         trueFasle.setTag(R.drawable.ic_resource_true);
 
+
+        //en cliauant sur ce button on retourne à l'activité précedente
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,6 +44,7 @@ public class settingsActivity extends Activity {
             }
         });
 
+        //cela permet changer l'icone pour la vibration
         trueFasle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
