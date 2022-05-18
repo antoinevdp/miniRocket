@@ -12,19 +12,37 @@ public class ColorSelect extends GameObject {
     public double radius;
 
     private Paint paint;
+    private Paint paintStroke;
     private int randomAndroidColor;
+
+    public boolean colorIsSelected = false;
 
     public ColorSelect(double coordX, double coordY, int id, double radius, int randomAndroidColor) {
         super(coordX, coordY);
         this.id = id;
         this.radius = radius;
 
+        this.paintStroke = new Paint();
         this.paint = new Paint();
         this.paint.setColor(randomAndroidColor);
     }
 
     // Affichage
     public void draw(Canvas canvas) {
-        canvas.drawCircle((float)coordX, (float)coordY, (float)radius, paint);
+        if(!this.colorIsSelected){
+            canvas.drawCircle((float)coordX, (float)coordY, (float)radius, paint);
+        }else {
+            this.paintStroke.setStyle(Paint.Style.STROKE);
+            this.paintStroke.setStrokeWidth(3f);
+            this.paintStroke.setColor(Color.WHITE);
+            canvas.drawCircle((float)coordX, (float)coordY, (float)radius+5, this.paintStroke);
+            canvas.drawCircle((float)coordX, (float)coordY, (float)radius, paint);
+        }
+    }
+
+
+    public void IsSelected(boolean isSelected){
+        this.colorIsSelected = isSelected;
+
     }
 }

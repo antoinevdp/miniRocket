@@ -20,6 +20,7 @@ import java.util.Random;
 
 import game.example.testminirocket.GamePanels.GameOver;
 import game.example.testminirocket.GamePanels.InfosDisplay;
+import game.example.testminirocket.SelectLevel;
 import game.example.testminirocket.graphics.Animator;
 import game.example.testminirocket.graphics.ColorSelect;
 import game.example.testminirocket.graphics.SpriteSheet;
@@ -101,8 +102,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         generatePlanets(numberOfPlanets, facteurDeDistance);
 
         this.colorSelect = new ColorSelect(2100, 500, 1,40, Color.RED);
+        this.colorSelect.IsSelected(true);
         list_colors.add(this.colorSelect);
         this.colorSelect = new ColorSelect(2100, 650, 2,40, Color.GREEN);
+        list_colors.add(this.colorSelect);
+        this.colorSelect = new ColorSelect(2100, 800, 3,40, Color.BLUE);
         list_colors.add(this.colorSelect);
 
         // initialisation des trajectoires et ajout dans la liste des trajectoires
@@ -119,6 +123,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN: // Dès que l'utilisateur appui
                 startLine(event.getX(), event.getY()); // On crée ou non la ligne en récupérant les coord de l'endroit cliqué
+                selectColor(event.getX(),event.getY());
                 return true; // Action terminée
 
             case MotionEvent.ACTION_MOVE: // Tant que l'utilisateur reste appuyé
@@ -183,10 +188,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         if (list_colors.size()>0){
             for (int i = 0; i < list_colors.size(); i++) {
                 list_colors.get(i).draw(canvas);
+                if(list_colors.get(i).colorIsSelected){
+                    list_colors.get(i).draw(canvas);
+                }
             }
         }
-
-
 
         infosDisplay.draw(canvas);
 
@@ -281,6 +287,29 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 ((cursorY >= t_planet.getPositionY() - t_planet.radius) &&
                         (cursorY <= t_planet.getPositionY() + t_planet.radius));
     }
+    public boolean hasTouchedColor(float cursorX, float cursorY, ColorSelect t_color){
+            return (cursorX >= t_color.getPositionX() - t_color.radius) &&
+                    (cursorX <= (float) t_color.getPositionX() + t_color.radius) &&
+                    (cursorY >= t_color.getPositionY() - t_color.radius) &&
+                    (cursorY <= t_color.getPositionY() + t_color.radius);
+    }
+
+
+    public void selectColor(float cursorX, float cursorY){
+        for (int i = 0; i < list_colors.size(); i++) {
+            ColorSelect t_color = list_colors.get(i);
+            if(hasTouchedColor(cursorX,cursorY,t_color)){
+                t_color.IsSelected(true);
+                ColorSelect selected = t_color;
+                for (int j = 0; j < list_colors.size(); j++) {
+                    if(list_colors.get(j)!=selected){
+                        list_colors.get(j).IsSelected(false);
+                    }
+                }
+            }
+        }
+    }
+
     // Trace la ligne
     public void startLine(float cursorX, float cursorY){
         for (int i = 0; i < list_planets.size(); i++) { // on parcourt la liste des planètes
