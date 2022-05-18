@@ -40,6 +40,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private boolean isGameOver;
 
     private int score;
+    private static int SCORE_TO_UNLOCK = 1000;
+    public boolean NEXT_LEVEL_IS_UNLOCKABLE = false;
 
     private Planet currentStartPlanet; // Planète où commence la ligne
     private Planet currentStopPlanet; // Planète où finie la ligne
@@ -221,6 +223,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             if(list_travellers.get(i).hasArrived){
                 list_travellers.remove(list_travellers.get(i));
                 this.score += SCORE_PER_ARRIVED_TRAVELLER;
+                if (this.score >= SCORE_TO_UNLOCK) NEXT_LEVEL_IS_UNLOCKABLE=true;
                 infosDisplay.setScore(this.score);
             }
             else if(list_travellers.get(i).canBeDestroyed){
@@ -422,7 +425,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
             }
             overlapping = false; // on reset
-            if (protection > 1000)break;// Si il y a eu plus de 1000 itérations, on arrête
+            if (protection > 2000)break;// Si il y a eu plus de 2000 itérations, on arrête
         }
     }
 

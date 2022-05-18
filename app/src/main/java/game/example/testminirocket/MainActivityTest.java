@@ -29,8 +29,16 @@ public class MainActivityTest extends Activity {
 
         super.onCreate(savedInstanceState);
 
+        Bundle parameter = getIntent().getExtras();
+        int nbPlanets = -1;
+        int distance = -1;
+        if(parameter != null){
+            nbPlanets = parameter.getInt("nbPlanets");
+            distance = parameter.getInt("distance");
+        }
+
         // Set content view to game, so that objects in the Game class can be rendered to the screen
-        game = new Game(this, 6, 4);
+        game = new Game(this, nbPlanets, distance);
         setContentView(game);
     }
 

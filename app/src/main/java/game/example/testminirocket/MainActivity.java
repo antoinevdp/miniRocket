@@ -21,6 +21,7 @@ This activity is the launch activity og the App
 public class MainActivity extends Activity {
     private Button button;
     private Button button_test;
+    private Button settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class MainActivity extends Activity {
 
         button = (Button) findViewById(R.id.btn_play);
         button_test = (Button) findViewById(R.id.test_btn);
+        settings = (Button) findViewById(R.id.btn_options);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +58,15 @@ public class MainActivity extends Activity {
                 startActivityForResult(myIntent, 0);
             }
         });
+
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(view.getContext(), settingsActivity.class);
+                startActivityForResult(myIntent, 0);
+            }
+        });
+
         button_test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,9 +74,13 @@ public class MainActivity extends Activity {
                 startActivityForResult(myIntent, 0);
             }
         });
+    }
 
-
-        
+    //no transition between activity
+    @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(0, 0);
     }
 
 }

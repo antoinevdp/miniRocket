@@ -123,20 +123,33 @@ public class secondActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(view.getContext(), MainActivityTest.class);
+                Bundle parameter = new Bundle();
                 switch (selectLvl){
                     case  0:
                         Toast.makeText(secondActivity.this, "Choose a level", Toast.LENGTH_SHORT).show();
                         break;
                     case  1:
+                        parameter.putInt("nbPlanets", 5);
+                        parameter.putInt("distance", 3);
+                        myIntent.putExtras(parameter);
                         startActivityForResult(myIntent, 0);
                         break;
                     case  2:
+                        parameter.putInt("nbPlanets", 8);
+                        parameter.putInt("distance", 2);
+                        myIntent.putExtras(parameter);
                         startActivityForResult(myIntent, 0);
                         break;
                     case  3:
+                        parameter.putInt("nbPlanets", 12);
+                        parameter.putInt("distance", 2);
+                        myIntent.putExtras(parameter);
                         startActivityForResult(myIntent, 0);
                         break;
                     case  4:
+                        parameter.putInt("nbPlanets", 15);
+                        parameter.putInt("distance", 2);
+                        myIntent.putExtras(parameter);
                         startActivityForResult(myIntent, 0);
                         break;
                 }
