@@ -12,13 +12,13 @@ import game.example.testminirocket.GameObjects.Game;
 /**
  * MainActivity is the entry point to our application.
  */
-public class MainActivityTest extends Activity {
+public class GameActivity extends Activity {
 
     private Game game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("MainActivityTest.java", "onCreate()");
+        Log.d("GameActivity.java", "onCreate()");
 
         Window window = getWindow();
         window.setFlags(
@@ -44,33 +44,33 @@ public class MainActivityTest extends Activity {
 
     @Override
     protected void onStart() {
-        Log.d("MainActivityTest.java", "onStart()");
+        Log.d("GameActivity.java", "onStart()");
         super.onStart();
 
     }
 
     @Override
     protected void onResume() {
-        Log.d("MainActivityTest.java", "onResume()");
+        Log.d("GameActivity.java", "onResume()");
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        Log.d("MainActivityTest.java", "onPause()");
+        Log.d("GameActivity.java", "onPause()");
         game.pause();
         super.onPause();
     }
 
     @Override
     protected void onStop() {
-        Log.d("MainActivityTest.java", "onStop()");
+        Log.d("GameActivity.java", "onStop()");
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        Log.d("MainActivityTest.java", "onDestroy()");
+        Log.d("GameActivity.java", "onDestroy()");
         super.onDestroy();
         finish();
     }

@@ -48,7 +48,6 @@ public class MainActivity extends Activity {
         Toast.makeText(MainActivity.this, "Test", Toast.LENGTH_LONG).show();
 
         button = (Button) findViewById(R.id.btn_play);
-        button_test = (Button) findViewById(R.id.test_btn);
         settings = (Button) findViewById(R.id.btn_options);
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -63,14 +62,6 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(view.getContext(), settingsActivity.class);
-                startActivityForResult(myIntent, 0);
-            }
-        });
-
-        button_test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent myIntent = new Intent(view.getContext(), MainActivityTest.class);
                 startActivityForResult(myIntent, 0);
             }
         });

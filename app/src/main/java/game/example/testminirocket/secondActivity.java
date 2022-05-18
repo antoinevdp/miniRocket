@@ -122,7 +122,7 @@ public class secondActivity extends Activity {
         cerclebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(view.getContext(), MainActivityTest.class);
+                Intent myIntent = new Intent(view.getContext(), GameActivity.class);
                 Bundle parameter = new Bundle();
                 switch (selectLvl){
                     case  0:
