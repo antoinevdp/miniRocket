@@ -13,7 +13,7 @@ import game.example.testminirocket.graphics.Sprite;
 public class Planet extends GameObject{
     private static final double SPEED_PIXELS_PER_SECOND = 100;
     private static final double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
-    private static final double SPAWN_PER_MINUTE = 20;
+    private static final double SPAWN_PER_MINUTE = 2.5;
     private static final double SPAWN_PER_SECOND = SPAWN_PER_MINUTE / 60.0;
     private static final double UPDATE_PER_SPAWN = GameLoop.MAX_UPS / SPAWN_PER_SECOND;
     private static double updateUntilNextSpawn = UPDATE_PER_SPAWN;

@@ -289,6 +289,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
         for (int i = 0; i < list_spaceShips.size(); i++) {
+            if (list_spaceShips.get(i).canBeDestroyed){
+                list_spaceShips.remove(list_spaceShips.get(i));
+                isGameOver = true;
+            }
             list_spaceShips.get(i).update();
         }
 
