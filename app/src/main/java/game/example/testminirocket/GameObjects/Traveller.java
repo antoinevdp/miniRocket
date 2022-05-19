@@ -31,6 +31,8 @@ public class Traveller extends GameObject{
     private Planet current_planet; // Planète actuelle
     private Planet next_target_planet; // Planète où l'on veut aller
     private Planet final_target_planet; // Planète où l'on veut aller
+    private Planet initial_planet; // Planète où l'on veut aller
+
 
     private double max_time; // temps de vie maximum
     private double time_remaining; // temps restant avant mort
@@ -47,7 +49,7 @@ public class Traveller extends GameObject{
     //Constructor
     public Traveller(Context context, double coordX, double coordY, double max_time, Planet current_planet, Planet next_target_planet, ArrayList<Planet> listAllPlanets) {
         super(coordX, coordY);
-        this.current_planet = current_planet;
+        this.initial_planet = current_planet;
         this.next_target_planet = next_target_planet;
         this.final_target_planet = next_target_planet;
         this.current_spaceship = null;
@@ -106,7 +108,10 @@ public class Traveller extends GameObject{
     }
 
     public Planet getInitial_planet() {
-        return current_planet;
+        return this.initial_planet;
+    }
+    public void setInitial_planet(Planet planet) {
+        this.initial_planet = planet;
     }
 
     public Planet getNext_Target_planet() {

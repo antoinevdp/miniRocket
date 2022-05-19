@@ -33,7 +33,7 @@ Responsible of rendering, updating, etc...
  */
 
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
-    private static final int SCORE_PER_ARRIVED_TRAVELLER = 50;
+    private static final int SCORE_PER_ARRIVED_TRAVELLER = 100;
     private GameLoop gameLoop;
 
     private boolean canDragLine = false; // peut on tracer la ligne en maintenant le doigt
@@ -45,6 +45,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private static int SCORE_TO_UNLOCK = 1000;
     public boolean NEXT_LEVEL_IS_UNLOCKABLE = false;
     private int current_familly_color = 1;
+    private ColorSelect current_color;
 
     private Planet currentStartPlanet; // Planète où commence la ligne
     private Planet currentStopPlanet; // Planète où finie la ligne
@@ -55,8 +56,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private ArrayList<Asteroid> list_asteroids = new ArrayList<Asteroid>(); // liste des Trajets entre planètes
     private ArrayList<SpaceShip> list_spaceShips = new ArrayList<>(); // liste des Trajets entre planètes
     private ArrayList<ColorSelect> list_colors = new ArrayList<>(); //liste des couleurs selectionables
-
-    private ColorSelect colorSelect;
 
 
     private ArrayList<ArrayList<Integer>> list_connections = new ArrayList<>();
@@ -77,7 +76,19 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             R.drawable.test_planet,
             R.drawable.n936292805_planet,
             R.drawable.n936292805,
-            R.drawable.n2098505015
+            R.drawable.n2098505015,
+            R.drawable.planet_146086290,
+            R.drawable.n2654324698,
+            R.drawable.m2429223588,
+            R.drawable.m30540,
+            R.drawable.terrepasterre,
+            R.drawable.deux,
+            R.drawable.ddd7624,
+            R.drawable.ggg87624,
+            R.drawable.gtrf7708,
+            R.drawable.fdsfsdfs,
+            R.drawable.qsdz21,
+            R.drawable.dsssd981
     };
 
     private int total_number_planets;
@@ -102,13 +113,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         //initialisationd es planètes et ajout dans la liste des planètes
 
 
-        this.colorSelect = new ColorSelect(2100, 500, 1,40, Color.GREEN);
-        this.colorSelect.IsSelected(true);
-        list_colors.add(this.colorSelect);
-        this.colorSelect = new ColorSelect(2100, 650, 2,40, Color.RED);
-        list_colors.add(this.colorSelect);
-        this.colorSelect = new ColorSelect(2100, 800, 3,40, Color.BLUE);
-        list_colors.add(this.colorSelect);
+        this.current_color = new ColorSelect(2100, 500, 1,40, Color.GREEN);
+        this.current_color.IsSelected(true);
+        list_colors.add(this.current_color);
+        this.current_color = new ColorSelect(2100, 650, 2,40, Color.RED);
+        list_colors.add(this.current_color);
+        this.current_color = new ColorSelect(2100, 800, 3,40, Color.BLUE);
+        list_colors.add(this.current_color);
+        this.current_color = list_colors.get(0);
 
         this.total_number_planets = numberOfPlanets;
         this.facteur_de_puissance = facteurDeDistance;
@@ -180,11 +192,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 list_trajectories.get(i).draw(canvas);
             }
         }
-        if (list_travellers.size()>0){
-            for (int i = 0; i < list_travellers.size(); i++) {
-                list_travellers.get(i).draw(canvas);
-            }
-        }
+
         if (list_asteroids.size()>0){
             for (int i = 0; i < list_asteroids.size(); i++) {
                 list_asteroids.get(i).draw(canvas);
@@ -216,10 +224,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         /*if (isGameOver){
             return;
         }*/
-        if (this.score >= 200) {
-            current_familly_color = 2;
-            spaceshipHasSpawn = false;
-        }
         if (Planet.readyToSpawn() && list_planets.size() < total_number_planets){
             generatePlanets(1, facteur_de_puissance);
         }
@@ -236,7 +240,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             Traveller traveller_test = new Traveller(getContext(), 0,0, 60, list_planets.get(spawn_planet_random), list_planets.get(target_planet_random), list_planets);
             list_travellers.add(traveller_test);
 
-            list_planets.get(target_planet_random).addTraveller(traveller_test);
+            list_planets.get(spawn_planet_random).addTraveller(traveller_test);
         }
         if (Asteroid.readyToSpawn() && remainingTrajCounter <= 3){
             Random generator = new Random();
@@ -265,6 +269,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 this.score += SCORE_PER_ARRIVED_TRAVELLER;
                 if (this.score >= SCORE_TO_UNLOCK) NEXT_LEVEL_IS_UNLOCKABLE=true;
                 infosDisplay.setScore(this.score);
+                infosDisplay.addTraveller_arrived();
             }
             else if(list_travellers.get(i).canBeDestroyed){
                 list_travellers.remove(list_travellers.get(i));
@@ -311,6 +316,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             ColorSelect t_color = list_colors.get(i);
             if(hasTouchedColor(cursorX,cursorY,t_color)){
                 t_color.IsSelected(true);
+                current_color = t_color;
                 ColorSelect selected = t_color;
                 for (int j = 0; j < list_colors.size(); j++) {
                     if(list_colors.get(j)!=selected){
@@ -319,6 +325,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 }
             }
         }
+        Log.d("select color ::::::::::::::::: ", String.valueOf(current_color.id));
+        Log.d("is used color ::::::::::::::::: ", String.valueOf(current_color.getIsUsed()));
+
     }
 
     // Trace la ligne
@@ -329,7 +338,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 currentStartPlanet = t_planet; // on assigne la planète touchée à la variable qui stocke la planète de départ
                 trajectoryIndex = list_planets.indexOf(currentStartPlanet); // on assigne son index à celui de la trajectoire actuelle
                 Trajectory current_trajectory = list_trajectories.get(i);
-                current_trajectory.setFamilly(current_familly_color);
+                current_trajectory.setFamilly(current_color.id);
                 current_trajectory.resetToCursor(cursorX,cursorY); // On place le départ de la ligne sur la position de la planète
                 current_trajectory.setStartPosition(t_planet.getPositionX(), t_planet.getPositionY()); // On positionne le début de la trajectoire à la planète de départ
                 if (currentStartPlanet.linkedPlanet != null){ // Si la planète associée à la planète de départ existe
@@ -355,10 +364,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     canLeaveLine = true; // On peut relacher la ligne
                     currentStopPlanet = t_planet; // la planète d'arrivée est la planète actuelle
                     // On set la fin du segment à l'emplacement du doigt
-                    if (currentStopPlanet.isLinkedWithPlanet() && currentStopPlanet.getListOfArrPlanets().size() > 0 && currentStopPlanet.my_trajectory.getFamilly() == current_familly_color){
+                    if (currentStopPlanet.isLinkedWithPlanet() && currentStopPlanet.getListOfArrPlanets().size() > 0 && currentStopPlanet.my_trajectory.getFamilly() == current_color.id){
                         canLeaveLine = false;
                         return;
-                    }else if (currentStopPlanet.getListOfArrPlanets().size() > 0 && !currentStopPlanet.isLinkedWithPlanet() && currentStopPlanet.my_trajectory.getFamilly() == current_familly_color){
+                    }else if (currentStopPlanet.getListOfArrPlanets().size() > 0 && !currentStopPlanet.isLinkedWithPlanet() && currentStopPlanet.my_trajectory.getFamilly() == current_color.id){
                         canLeaveLine = false;
                         return;
                     }
@@ -379,8 +388,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             // Si on peut relâcher sur une planète
             if(canLeaveLine){
 
-                if (currentStopPlanet.isLinkedWithPlanet() && currentStopPlanet.getListOfArrPlanets().size() != 0 && (currentStopPlanet.my_trajectory.getFamilly() == current_familly_color)){
-                    currentStartPlanet.my_trajectory.setFamilly(current_familly_color);
+                if (currentStopPlanet.isLinkedWithPlanet() && currentStopPlanet.getListOfArrPlanets().size() != 0 && (currentStopPlanet.my_trajectory.getFamilly() == current_color.id)){
+                    currentStartPlanet.my_trajectory.setFamilly(current_color.id);
                     spaceshipHasSpawn = false;
                 }
                 // On set la fin du segment à l'emplacement de la deuxieme planète
@@ -400,11 +409,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 list_connections.set(trajectoryIndex, list_to_push);
                 list_traj_drawn.add(trajectoryIndex);
                 System.out.println(list_connections);
-                if (!spaceshipHasSpawn){
+                Log.d("select color ::::::::::::::::: ", String.valueOf(current_color.getIsUsed()));
+
+                if (!this.current_color.getIsUsed()){
                     SpriteSheet spriteSheet = new SpriteSheet(getContext());
                     Animator animator = new Animator(spriteSheet.getRocketSpriteArray());
-                    SpaceShip spaceShip = new SpaceShip(currentStartPlanet.getPositionX()+50, currentStartPlanet.getPositionY()+50, currentStartPlanet, currentStartPlanet.my_trajectory.getFamilly(), animator);
+                    SpaceShip spaceShip = new SpaceShip(list_trajectories.get(trajectoryIndex).getPosMidX(), list_trajectories.get(trajectoryIndex).getPosMidY(), currentStartPlanet, currentStartPlanet.my_trajectory.getFamilly(), animator);
                     list_spaceShips.add(spaceShip);
+                    this.current_color.setIsUsed(true);
                     spaceshipHasSpawn = true;
                 }
                 for (int i = 0; i < list_spaceShips.size(); i++) {
@@ -492,7 +504,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 // Instanciation de la planète
                 int index = new Random().nextInt(androidColors.length);
                 int randomAndroidColor = androidColors[index];
-                Trajectory t_trajectory = new Trajectory(list_planets.size(), 0,0,0,0, null, null, 1);
+                Trajectory t_trajectory = new Trajectory(list_planets.size(), 0,0,0,0, null, null, current_color.id);
                 list_trajectories.add(t_trajectory);
                 ArrayList<Integer> t_list = new ArrayList<>();
                 t_list.add(0);
@@ -501,7 +513,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
                 SpriteSheet spriteSheet_planet = new SpriteSheet(getContext());
                 Animator animator = new Animator(spriteSheet_planet.getPlanetSpriteArray(index, spriteList));
-                Planet planet = new Planet(getContext(), id, coordX_rand, coordY_rand, radius_rand, randomAndroidColor, "", t_trajectory, list_travellers, animator);
+                Planet planet = new Planet(getContext(), id, coordX_rand, coordY_rand, radius_rand, randomAndroidColor, "", t_trajectory, animator);
                 list_planets.add(planet);
                 androidColors = removeTheElement(androidColors, index);
                 spriteList = removeTheElement(spriteList, index);

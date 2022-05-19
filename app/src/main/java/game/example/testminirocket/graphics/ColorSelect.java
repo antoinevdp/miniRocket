@@ -16,6 +16,7 @@ public class ColorSelect extends GameObject {
     private int randomAndroidColor;
 
     public boolean colorIsSelected = false;
+    public boolean isUsed = false;
 
     public ColorSelect(double coordX, double coordY, int id, double radius, int randomAndroidColor) {
         super(coordX, coordY);
@@ -43,6 +44,15 @@ public class ColorSelect extends GameObject {
 
     public void IsSelected(boolean isSelected){
         this.colorIsSelected = isSelected;
+    }
+    public void setIsUsed(boolean isUsed){
+        this.isUsed = isUsed;
+    }
+    public boolean getIsUsed(){
+        return this.isUsed;
+    }
 
+    public int getColor() {
+        return this.randomAndroidColor;
     }
 }

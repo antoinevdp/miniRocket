@@ -42,7 +42,7 @@ public class Planet extends GameObject{
 
 
     // Constructeur
-    public Planet(Context context, int id, double coordX, double coordY, double radius, int randomAndroidColor, String infos, Trajectory my_trajectory, ArrayList<Traveller> list_travellers, Animator animator){
+    public Planet(Context context, int id, double coordX, double coordY, double radius, int randomAndroidColor, String infos, Trajectory my_trajectory, Animator animator){
         super(coordX, coordY);
         this.id = id;
         this.coordX = coordX;
@@ -55,7 +55,7 @@ public class Planet extends GameObject{
         this.animator = animator;
         this.planetState = new PlanetState(this);
 
-        this.list_travellers = list_travellers;
+        this.list_travellers = new ArrayList<>();
         this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.paint.setStyle(Paint.Style.STROKE);
         this.paint.setStrokeWidth(currentStrokeWidth);
@@ -99,6 +99,10 @@ public class Planet extends GameObject{
 
         this.paint.setStrokeWidth(currentStrokeWidth);
         animator.drawPlanet(canvas, this);
+
+        for (int i = 0; i < list_travellers.size(); i++) {
+            list_travellers.get(i).draw(canvas);
+        }
     }
 
     // Pour set la trajectoire de sortie de cette planète

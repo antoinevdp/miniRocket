@@ -114,7 +114,9 @@ public class Trajectory extends GameObject{
         this.familly = familly;
         if (this.familly == 1)
         paint.setColor(Color.GREEN);
-        else paint.setColor(Color.RED);
+        else if (this.familly == 2)
+            paint.setColor(Color.RED);
+        else paint.setColor(Color.BLUE);
         Log.d("familly", String.valueOf(familly));
     }
 }
