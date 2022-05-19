@@ -66,4 +66,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_options" />
 
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="401dp"
+        android:layout_height="410dp"
+        android:layout_marginEnd="64dp"
+        android:src="@drawable/back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
